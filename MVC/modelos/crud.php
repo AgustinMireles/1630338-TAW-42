@@ -32,6 +32,19 @@
 
         }
 
+
+        //Modelo ingresoUsuarioModelo
+        public function mdlingresoUsuarioModelo($datoModelo, $tabla){
+            $stmt = Conexion::conectar()->prepare("SELECT usuario, password FROM $tabla WHERE usuario = :usuario");
+            $stmt = bindParam(":usuario", $datoModelo["usuario"],PDO::PARAM_STR);
+
+            //fecth() obtiene una fila de un conjunto de resultado asociado al objeto $stmt
+            return $stmt-fetch();
+
+            $stmt->close();
+        }
+
+
     }
 
 
