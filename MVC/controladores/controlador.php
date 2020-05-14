@@ -43,6 +43,96 @@
             }
         }
 
+        /*INGRESO USUARIO*/ 
+        public function ctringresoUsuarioControlador(){
+            if(isset($_POST["usuarioIngreso"])){
+                $datosControlador = array("usuario" => $_POST["usuarioIngreso"],
+                                                        $_POST["password"] => $_POST["passwordIngreso"]);
+                $respuesta = Datos::mdlingresoUsuarioModelo($datosControlador,"usuarios");
+
+                //Validar la repuesta de modelo para ver si es un usuario correcto.
+
+                if($respuesta["usuario"] == $_POST["usuarioIngreso"] && $respuesta["password"] == $_POST["passwordIngreso"]){
+                    session_start();
+                    $_SESSION["validar"] = true;
+                    header("location:index.php?action=usuarios");
+                }
+                else{
+                    header("location:index.php?action=fallo");
+                }
+                                                    }
+        }
+
+        //VISTA DE USUARIOS
+        public function ctrvistaUsuarioController(){
+            $respuesta = Datos::mdlvistaUsuarioModelo("usuarios");
+            //Utilizar un foreach para iterar un array e imprimir la consulta del modelo
+
+            foreach($respuesta as $row => $item){
+                echo'<tr>
+                        <td>'.$item["usuario"].'</td>
+                        <td>'.$item["password"].'</td>
+                        <td>'.$item["email"].'</td>
+                        <td><a href="index.php?action=usuarios&idEditar='.$item["id"].'"><button>Editar</button></a></td>
+                        <td><a href="index.php?action=usuarios&idBorrar='.$item["id"].'"><button>Borrar</button></a></td>
+                    </tr>';
+            }
+        }
+
+        //EDITAR USUARIO
+        public function ctreditarUsuarioControlador(){
+            $datosControlador = $_GET["id"];
+            $respuesta=Datos::mdleditarUsuarioModelo($datosControlador,"usuarios");
+            
+            //Diseñar la estructura de un formulario que se muestren los datos de la consulta generada en el Modelo
+            echo '<input type="hidden" value="'.$respuesta["id"].'" name="idEditar">
+                <iput type="text" value="'.$respuesta["usuario"].'" name="usuarioEditar" required>
+                <iput type="text" value="'.$respuesta["password"].'" name="passwordEditar" required>
+                <iput type="text" value="'.$respuesta["email"].'" name="emailEditar" required>
+            ';
+        }
+
+        //ACTUALIZAR USUARIO
+        public function ctractualizarUsuarioControlador(){
+            if(isset($_POST["usuarioEditar"])){
+                $datosControlador = array("id"=>$_POST["idEditar"],
+                                        "usuario"=>$_POST["usuarioEditar"],
+                                        "password"=>$_POST["usuarioPassword"],
+                                        "email"=>$_POST["emailEditar"]);
+                $respuesta = Datos::mdlactualizarUsuarioModelo($datosControlador,"usuarios");    
+                
+                if($respuesta == "success"){
+                    header("location:index.php?action=cambio");
+                }             
+                else{
+                    echo "error";
+                }           
+            }
+
+        }
+
+        //BORRAR USUARIO
+        public function borrarUusarioControlador(){
+            if(isset($_GET["idBorrar"])){
+                $datosControlador = $_GET["idBorrar"];
+                $respuesta = Datos::mdlborrarUsuarioModelo($datosControlador,"usuarios");
+                
+                if($respuesta == "success"){
+                    header("location:index.php?action=usuarios");
+                }
+            }
+        }
+
+        //LISTA DE MODELOS POR DESARROLLAR:
+        /*
+        1. mdlregistroUsuarioModelo
+        2. mdlingresoUsuarioModelo
+        3. mdlvistaUsuarioModelo
+        4. mdleditarUsuarioModelo
+        5. mdlactualizarUsuarioModelo
+        6. mdlborrarUsuarioModelo
+        */ 
+
 
 
 
