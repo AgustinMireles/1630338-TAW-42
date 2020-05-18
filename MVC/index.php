@@ -10,6 +10,7 @@ require_once "modelos/crudProd.php";
 require_once "controladores/controlador.php";
 
 //
-$mvc->mdlenlacesPaginasModel();
+$mvc= new MvcControlador();
+$mvc->ctrpagina();
 
 ?>

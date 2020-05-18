@@ -3,11 +3,11 @@
 
         #llamada a la plantilla
         public function ctrpagina(){
-            include"views/template.php";
+            include "vistas/template.php";
         }
 
         //Enlaces
-        public function ctrEnlacesPaginasControlador(){
+        public function ctrenlacesPaginasControlador(){
             if(isset($_GET['action'])){
                 $enlaces = $_GET['action'];
             }
@@ -16,7 +16,7 @@
             }
 
             //Es el momento enque el controlador invoca al modelo enlacesPaginaModelo para que muestre el listado de paginas
-            $respuesta = Paginas::mdlEnlacesPaginasModel($enlaces);
+            $respuesta = Paginas::mdlenlacesPaginasModel($enlaces);
             include $respuesta;
         }
 
@@ -44,10 +44,11 @@
         }
 
         /*INGRESO USUARIO*/ 
+        
         public function ctringresoUsuarioControlador(){
             if(isset($_POST["usuarioIngreso"])){
                 $datosControlador = array("usuario" => $_POST["usuarioIngreso"],
-                                                        $_POST["password"] => $_POST["passwordIngreso"]);
+                                         "password" => $_POST["passwordIngreso"]);
                 $respuesta = Datos::mdlingresoUsuarioModelo($datosControlador,"usuarios");
 
                 //Validar la repuesta de modelo para ver si es un usuario correcto.
@@ -64,7 +65,8 @@
         }
 
         //VISTA DE USUARIOS
-        public function ctrvistaUsuarioController(){
+        
+        public function ctrvistaUsuarioControlador(){
             $respuesta = Datos::mdlvistaUsuarioModelo("usuarios");
             //Utilizar un foreach para iterar un array e imprimir la consulta del modelo
 
@@ -73,7 +75,7 @@
                         <td>'.$item["usuario"].'</td>
                         <td>'.$item["password"].'</td>
                         <td>'.$item["email"].'</td>
-                        <td><a href="index.php?action=usuarios&idEditar='.$item["id"].'"><button>Editar</button></a></td>
+                        <td><a href="index.php?action=editar&idEditar='.$item["id"].'"><button>Editar</button></a></td>
                         <td><a href="index.php?action=usuarios&idBorrar='.$item["id"].'"><button>Borrar</button></a></td>
                     </tr>';
             }
@@ -81,14 +83,16 @@
 
         //EDITAR USUARIO
         public function ctreditarUsuarioControlador(){
-            $datosControlador = $_GET["id"];
-            $respuesta=Datos::mdleditarUsuarioModelo($datosControlador,"usuarios");
+            $datosControlador = $_GET["idEditar"];
+            $respuesta = Datos::mdleditarUsuarioModelo($datosControlador,"usuarios");
             
             //Diseñar la estructura de un formulario que se muestren los datos de la consulta generada en el Modelo
-            echo '<input type="hidden" value="'.$respuesta["id"].'" name="idEditar">
-                <iput type="text" value="'.$respuesta["usuario"].'" name="usuarioEditar" required>
-                <iput type="text" value="'.$respuesta["password"].'" name="passwordEditar" required>
-                <iput type="text" value="'.$respuesta["email"].'" name="emailEditar" required>
+            echo '
+                <input type="hidden" value="'.$respuesta["id"].'" name="idEditar">
+                <input type="text" value="'.$respuesta["usuario"].'" name="usuarioEditar" required>
+                <input type="password" value="'.$respuesta["password"].'" name="passwordEditar" required>
+                <input type="text" value="'.$respuesta["email"].'" name="emailEditar" required>
+                <input type="submit" value="Confirmar">
             ';
         }
 
@@ -97,7 +101,7 @@
             if(isset($_POST["usuarioEditar"])){
                 $datosControlador = array("id"=>$_POST["idEditar"],
                                         "usuario"=>$_POST["usuarioEditar"],
-                                        "password"=>$_POST["usuarioPassword"],
+                                        "password"=>$_POST["passwordEditar"],
                                         "email"=>$_POST["emailEditar"]);
                 $respuesta = Datos::mdlactualizarUsuarioModelo($datosControlador,"usuarios");    
                 
@@ -112,7 +116,7 @@
         }
 
         //BORRAR USUARIO
-        public function borrarUusarioControlador(){
+        public function ctrborrarUsuarioControlador(){
             if(isset($_GET["idBorrar"])){
                 $datosControlador = $_GET["idBorrar"];
                 $respuesta = Datos::mdlborrarUsuarioModelo($datosControlador,"usuarios");
@@ -125,12 +129,12 @@
 
         //LISTA DE MODELOS POR DESARROLLAR:
         /*
-        1. mdlregistroUsuarioModelo
-        2. mdlingresoUsuarioModelo
-        3. mdlvistaUsuarioModelo
-        4. mdleditarUsuarioModelo
-        5. mdlactualizarUsuarioModelo
-        6. mdlborrarUsuarioModelo
+        1. mdlregistroUsuarioModelo-ok
+        2. mdlingresoUsuarioModelo-ok
+        3. mdlvistaUsuarioModelo-ok
+        4. mdleditarUsuarioModelo-ok
+        5. mdlactualizarUsuarioModelo-ok
+        6. mdlborrarUsuarioModelo-ok
         */ 
 
 

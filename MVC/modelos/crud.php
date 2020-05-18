@@ -36,11 +36,65 @@
         //Modelo ingresoUsuarioModelo
         public function mdlingresoUsuarioModelo($datoModelo, $tabla){
             $stmt = Conexion::conectar()->prepare("SELECT usuario, password FROM $tabla WHERE usuario = :usuario");
-            $stmt = bindParam(":usuario", $datoModelo["usuario"],PDO::PARAM_STR);
-
+            $stmt->bindParam(":usuario", $datoModelo["usuario"],PDO::PARAM_STR);
+            $stmt->execute();
             //fecth() obtiene una fila de un conjunto de resultado asociado al objeto $stmt
-            return $stmt-fetch();
+            return $stmt->fetch();
 
+            $stmt->close();
+        }
+
+        //Modelo Vista Usuarios
+
+        public function mdlvistaUsuarioModelo($tabla){
+            $stmt = Conexion::conectar()->prepare("SELECT id, usuario,password,email FROM $tabla");
+            $stmt->execute();
+
+            //fetcAll(): obtiene todas las filas de un conjunto  de resultados  asociado al objeto PDO statment (stmt)
+            return $stmt->fetchAll();
+
+            $stmt->close();
+        }
+
+        //Modelo editar usuario
+        
+        public function mdleditarUsuarioModelo($datoModelo, $tabla){
+            $stmt = Conexion::conectar()->prepare("SELECT id, usuario, password, email FROM $tabla WHERE id = :id");
+            $stmt->bindParam(":id", $datoModelo, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch();
+            $stmt->close();
+        }
+
+        //Modelo Actualizar Usuario
+        public function mdlactualizarUsuarioModelo($datoModelo, $tabla){
+            $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET usuario = :usuario, password = :password, email = :email WHERE id = :id");
+
+            $stmt->bindParam(":usuario", $datoModelo["usuario"], PDO::PARAM_INT);
+            $stmt->bindParam(":password", $datoModelo["password"], PDO::PARAM_INT);
+            $stmt->bindParam(":email", $datoModelo["email"], PDO::PARAM_INT);
+            $stmt->bindParam(":id", $datoModelo["id"], PDO::PARAM_INT);
+
+           
+            if($stmt->execute()){
+                return "success";
+            }else{
+                return "error";
+            }
+            $stmt->close();
+
+        }
+
+        //Modelo Borrar Usuario
+        public function mdlborrarUsuarioModelo($datoModelo, $tabla){
+            $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
+            $stmt->bindParam(":id", $datoModelo, PDO::PARAM_INT);
+
+            if($stmt->execute()){
+                return "success";
+            }else{
+                return "error";
+            }
             $stmt->close();
         }
 
