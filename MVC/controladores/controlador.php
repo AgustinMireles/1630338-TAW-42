@@ -2,12 +2,23 @@
     class MvcControlador{
 
         #llamada a la plantilla
-        public function ctrpagina(){
-            include "vistas/template.php";
+        static public function ctrpagina(){
+            
+            /**COMPROBAMOS SI EXISTE SESSION PARA INCLUIR EL TEMPLATE, DE OTRA FORMA SOLO MOSTRARA LA VISTA INICIAR SESION O REGISTRO*/
+            @session_start();
+
+		    if(isset($_SESSION['validar'])){
+                include "vistas/template.php";
+    
+                    }elseif(isset($_GET['action']) && $_GET['action'] == "registro"){
+                        include "vistas/modulos/registro.php";  
+             }else
+                 include "vistas/modulos/ingresar.php";  
         }
+    
 
         //Enlaces
-        public function ctrenlacesPaginasControlador(){
+        static public function ctrenlacesPaginasControlador(){
             if(isset($_GET['action'])){
                 $enlaces = $_GET['action'];
             }
@@ -20,8 +31,8 @@
             include $respuesta;
         }
 
-        //Registro de Usuarios
-        public function ctrregistroUsuarioControlador(){
+        //Registro de Usuarios usuarioRegistro passwordRegistro emailRegistro
+        static public function ctrregistroUsuarioControlador(){
             if(isset($_POST["usuarioRegistro"])){
 
                 //RECIBE A TRAVES DEL METODO POST EL NAME (HTML) DE USUARIO, PASSWORD Y EMAIL, SE ALMACENAN LOS DATOS EN UNA VARIABLE O PROPIEDAD DE TIPO ARRAY ASOCIATIVO CON SUS RESPECTIVAS PROPIEDAD(usuario, password, email).
@@ -34,10 +45,18 @@
 
                 //se imprime la respuesta en la vista
                 if($respuesta == "success"){
-                    header("location:index.php?action=ok");
+                    echo '<script>
+
+								window.location = "index.php?action=ok";
+
+							</script>';
                 }
                 else{
-                    header("location:index.php");
+                    echo '<script>
+
+								window.location = "index.php";
+
+							</script>';
                 }
            
             }
@@ -45,7 +64,7 @@
 
         /*INGRESO USUARIO*/ 
         
-        public function ctringresoUsuarioControlador(){
+        static public function ctringresoUsuarioControlador(){
             if(isset($_POST["usuarioIngreso"])){
                 $datosControlador = array("usuario" => $_POST["usuarioIngreso"],
                                          "password" => $_POST["passwordIngreso"]);
@@ -56,10 +75,19 @@
                 if($respuesta["usuario"] == $_POST["usuarioIngreso"] && $respuesta["password"] == $_POST["passwordIngreso"]){
                     session_start();
                     $_SESSION["validar"] = true;
-                    header("location:index.php?action=usuarios");
+                    $_SESSION["nombre"] = $respuesta["usuario"];
+                    echo '<script>
+
+								window.location = "index.php?action=usuarios";
+
+							</script>';
                 }
                 else{
-                    header("location:index.php?action=fallo");
+                    echo '<script>
+
+								window.location = "index.php?action=fallo";
+
+							</script>';
                 }
                                                     }
         }
@@ -75,29 +103,53 @@
                         <td>'.$item["usuario"].'</td>
                         <td>'.$item["password"].'</td>
                         <td>'.$item["email"].'</td>
-                        <td><a href="index.php?action=editar&idEditar='.$item["id"].'"><button>Editar</button></a></td>
-                        <td><a href="index.php?action=usuarios&idBorrar='.$item["id"].'"><button>Borrar</button></a></td>
+                
+                        <td><a href="index.php?action=editar&idEditar='.$item["id"].'" class="btn btn-warning btn-circle"><i class="fas fa-exclamation-triangle"></i></a></td>
+                        <td><a href="index.php?action=usuarios&idBorrar='.$item["id"].'" class="btn btn-danger btn-circle"><i class="fas fa-trash"></i></a></td>
                     </tr>';
             }
         }
 
         //EDITAR USUARIO
-        public function ctreditarUsuarioControlador(){
+        static public function ctreditarUsuarioControlador(){
             $datosControlador = $_GET["idEditar"];
             $respuesta = Datos::mdleditarUsuarioModelo($datosControlador,"usuarios");
             
             //Diseñar la estructura de un formulario que se muestren los datos de la consulta generada en el Modelo
             echo '
-                <input type="hidden" value="'.$respuesta["id"].'" name="idEditar">
-                <input type="text" value="'.$respuesta["usuario"].'" name="usuarioEditar" required>
-                <input type="password" value="'.$respuesta["password"].'" name="passwordEditar" required>
-                <input type="text" value="'.$respuesta["email"].'" name="emailEditar" required>
-                <input type="submit" value="Confirmar">
+    
+                <div class="form-group row">
+                <div class="col mb-3 mb-sm-0">
+                <input type="hidden" class="form-control form-control-user" value="'.$respuesta["id"].'" name="idEditar">
+                </div>
+                </div>
+
+                <div class="form-group row">
+                <div class="col mb-3 mb-sm-0">
+                <input type="text" class="form-control form-control-user" value="'.$respuesta["usuario"].'" name="usuarioEditar" required>
+                </div>
+                </div>
+
+                <div class="form-group row">
+                <div class="col mb-3 mb-sm-0">
+                <input type="password" class="form-control form-control-user" value="'.$respuesta["password"].'" name="passwordEditar" required>
+                </div>
+                </div>
+
+                <div class="form-group row">
+                <div class="col mb-3 mb-sm-0">
+                <input type="email" class="form-control form-control-user" value="'.$respuesta["email"].'" name="emailEditar" required>
+                </div>
+                </div>
+
+                <div class="d-flex float-right">
+                <button type="submit" class="btn btn-success btn-circle"><i class="fas fa-check"></i></button>
+                </div>
             ';
         }
 
         //ACTUALIZAR USUARIO
-        public function ctractualizarUsuarioControlador(){
+        static public function ctractualizarUsuarioControlador(){
             if(isset($_POST["usuarioEditar"])){
                 $datosControlador = array("id"=>$_POST["idEditar"],
                                         "usuario"=>$_POST["usuarioEditar"],
@@ -106,7 +158,11 @@
                 $respuesta = Datos::mdlactualizarUsuarioModelo($datosControlador,"usuarios");    
                 
                 if($respuesta == "success"){
-                    header("location:index.php?action=cambio");
+                    echo '<script>
+
+								window.location = "index.php?action=usuarios";
+
+							</script>';
                 }             
                 else{
                     echo "error";
@@ -116,13 +172,17 @@
         }
 
         //BORRAR USUARIO
-        public function ctrborrarUsuarioControlador(){
+        static public function ctrborrarUsuarioControlador(){
             if(isset($_GET["idBorrar"])){
                 $datosControlador = $_GET["idBorrar"];
                 $respuesta = Datos::mdlborrarUsuarioModelo($datosControlador,"usuarios");
                 
                 if($respuesta == "success"){
-                    header("location:index.php?action=usuarios");
+                    echo '<script>
+
+								window.location = "index.php?action=usuarios";
+
+							</script>';
                 }
             }
         }

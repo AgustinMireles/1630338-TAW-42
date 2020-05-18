@@ -70,9 +70,9 @@
         public function mdlactualizarUsuarioModelo($datoModelo, $tabla){
             $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET usuario = :usuario, password = :password, email = :email WHERE id = :id");
 
-            $stmt->bindParam(":usuario", $datoModelo["usuario"], PDO::PARAM_INT);
-            $stmt->bindParam(":password", $datoModelo["password"], PDO::PARAM_INT);
-            $stmt->bindParam(":email", $datoModelo["email"], PDO::PARAM_INT);
+            $stmt->bindParam(":usuario", $datoModelo["usuario"], PDO::PARAM_STR);
+            $stmt->bindParam(":password", $datoModelo["password"], PDO::PARAM_STR);
+            $stmt->bindParam(":email", $datoModelo["email"], PDO::PARAM_STR);
             $stmt->bindParam(":id", $datoModelo["id"], PDO::PARAM_INT);
 
            

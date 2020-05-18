@@ -5,8 +5,8 @@
         class Paginas{
 
             public function mdlenlacesPaginasModel($enlaces){
-            if ($enlaces == "ingresar" || ($enlaces) == "usuarios"|| ($enlaces) == "productos" || 
-                ($enlaces) == "registroProducto" || ($enlaces) == "editar" || ($enlaces) == "editarProducto" || ($enlaces) == "salir"){
+            if ($enlaces == "ingresar" || ($enlaces) == "usuarios"|| ($enlaces) == "productos" || ($enlaces) == "registro" || ($enlaces) == "categorias" ||
+                ($enlaces) == "registroProducto" || ($enlaces) == "add_productos" || ($enlaces) == "add_categorias" || ($enlaces) == "editar" || ($enlaces) == "editarProd" || ($enlaces) == "editarCate"  || ($enlaces) == "salir"){
                 $modulo = "vistas/modulos/".$enlaces.".php";
             }
             else if($enlaces == "index"){

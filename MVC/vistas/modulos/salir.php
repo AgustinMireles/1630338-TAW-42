@@ -1,5 +1,7 @@
 <?php
-session_start();
 session_destroy();
+echo '<script>
+		window.location = "index.php?action=index";
+	 </script>';
+ob_end_flush();
 ?>
-<h1>!Haz salido de la aplicación!</h1>

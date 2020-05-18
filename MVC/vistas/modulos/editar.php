@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    @session_start();
 
     if(!$_SESSION["validar"]){
         header("location:index.php?action=ingresar");
@@ -7,17 +7,38 @@
     }
 
 
+
 ?>
 
-<h1>Editar Usuarios</h1>
-   <form method="post">
-    
-        <?php
-            $editarUsuario = new MvcControlador();
-            $editarUsuario -> ctreditarUsuarioControlador();
-            $editarUsuario -> ctractualizarUsuarioControlador();
-       
-        ?>
-       
-    
-    </form>
+
+<div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+           
+           <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+                <div class="row">
+                <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                      <div class="col-lg-7">
+                            
+                            <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Editar Usuario!</h1>
+                                    </div>
+                                     <form class="user" method="post">
+                                            <?php
+                                                $editarUsuario = new MvcControlador();
+                                                $editarUsuario -> ctreditarUsuarioControlador();
+                                                $editarUsuario -> ctractualizarUsuarioControlador();
+                                            ?>
+                                    </form>
+                            </div>
+
+                       </div>
+                  </div>
+        
+            </div>
+
+     </div>
+
+</div>
