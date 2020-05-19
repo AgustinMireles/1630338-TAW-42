@@ -94,7 +94,7 @@
 
         //VISTA DE USUARIOS
         
-        public function ctrvistaUsuarioControlador(){
+        static public function ctrvistaUsuarioControlador(){
             $respuesta = Datos::mdlvistaUsuarioModelo("usuarios");
             //Utilizar un foreach para iterar un array e imprimir la consulta del modelo
 

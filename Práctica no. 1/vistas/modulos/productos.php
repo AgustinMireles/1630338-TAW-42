@@ -25,6 +25,7 @@
                         <th>Precio Compra</th>
                         <th>Precio Venta</th>
                         <th>Inventario</th>
+                        <th>Categoría</th>
                         <th>¿Editar?</th>
                         <th>¿Eliminar?</th>
                     </tr>
@@ -36,6 +37,7 @@
                         <th>Precio Compra</th>
                         <th>Precio Venta</th>
                         <th>Inventario</th>
+                        <th>Categoría</th>
                         <th>¿Editar?</th>
                         <th>¿Eliminar?</th>
                     </tr>

@@ -32,6 +32,26 @@
                     <div class="form-group">
                       <input type="number" min="1" class="form-control form-control-user" name="new_inventario"  placeholder="Cantidad Producto..." required>
                     </div>
+
+                    <div class="form-group">
+                    <select class="form-control input-lg" id="nuevaCategoria" name="newCategoria" required>
+                  
+                    <option value="">Selecionar categoría</option>
+
+                      <?php
+
+                      $categorias = MvcControladorCate::ctrCategorias();
+
+                      foreach ($categorias as $key => $value) {
+                        
+                        echo '<option value="'.$value["id"].'">'.$value["nombre"].'</option>';
+                      }
+
+                      ?>
+  
+                    </select>
+                    </div>
+
                     <button type="submit" class="btn btn-primary btn-user btn-block">
                       Agregar
                     </button>

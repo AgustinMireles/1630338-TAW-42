@@ -54,8 +54,16 @@
             }
         }
 
+        static public function ctrCategorias(){
+            $id = null;
+            $respuesta = DatosCate::mdlCategoria("categorias",$id);
+            //Utilizar un foreach para iterar un array e imprimir la consulta del modelo
+            return $respuesta;
+
+        }
+
         //EDITAR CATEGORIAS
-        public function ctreditarCategoria(){
+        static public function ctreditarCategoria(){
             $datosControlador = $_GET["idEditar"];
             $respuesta = DatosCate::mdleditarCategoria($datosControlador,"categorias");
             

@@ -15,7 +15,8 @@
                                           "descripcion"=>$_POST["newDescripcion"],
                                           "precio_compra"=>$_POST["new_precio_compra"],
                                           "precio_venta"=>$_POST["new_precio_venta"],
-                                          "inventario"=>$_POST["new_inventario"]);
+                                          "inventario"=>$_POST["new_inventario"],
+                                          "id_categoria"=>$_POST["newCategoria"]);
                  
                 //Se le dice al modelo modelos/crudProd.php (Datos::mdlregistroProducto), 
                 //que en modelo Datos el metodo mdlregistroUsuarioModelo en sus parametros los valores 
@@ -47,26 +48,29 @@
         
         static public function ctrverProductos(){
             $respuesta = DatosProd::mdlverProductos("productos");
+            
             //Utilizar un foreach para iterar un array e imprimir la consulta del modelo
             //mostramos todos los campos de la tabla productos en una tabla
             foreach($respuesta as $row => $item){
+            $productcate = DatosCate::mdlCategoria("categorias", $item["id_categoria"]);
                 echo'<tr>
                         <td>'.$item["nombre"].'</td>
                         <td>'.$item["descripcion"].'</td>
                         <td>'.$item["precio_compra"].'</td>
                         <td>'.$item["precio_venta"].'</td>
                         <td>'.$item["inventario"].'</td>
-                        <td><a href="index.php?action=editarProd&idEditar='.$item["id"].'" class="btn btn-warning btn-circle"><i class="fas fa-exclamation-triangle"></i></a></td>
+                        <td>'.$productcate["nombre"].'</td>
+                        <td><a href="index.php?action=editarProd&idEditar='.$item["id"].'&idCategoria='.$item["id_categoria"].'" class="btn btn-warning btn-circle"><i class="fas fa-exclamation-triangle"></i></a></td>
                         <td><a href="index.php?action=productos&idBorrar='.$item["id"].'" class="btn btn-danger btn-circle"><i class="fas fa-trash"></i></a></td>
                     </tr>';
             }
         }
 
         //EDITAR PRODUCTO
-        public function ctreditarProducto(){
+        static public function ctreditarProducto(){
             $datosControlador = $_GET["idEditar"];
             $respuesta = DatosProd::mdleditarProducto($datosControlador,"productos");
-            
+            $categorias = MvcControladorCate::ctrCategorias();
             //Diseñar la estructura de un formulario que se muestren los datos de la consulta generada en el Modelo
             //damos estilos a el formulario editar producto con boostrap
             echo '
@@ -107,10 +111,25 @@
                 </div>
                 </div>
 
+               
+                <select class="form-control input-lg" id="nuevaCategoria" name="categoriaEditar" required>
+                  
+                    <option value="">Selecionar categoría</option>';
+
+                
+                      foreach ($categorias as $key => $value) {
+                        
+                        echo '<option value="'.$value["id"].'">'.$value["nombre"].'</option>';
+                      }
+
+                      
+                    echo'
+                    </select>
+
                 <div class="d-flex float-right">
                 <button type="submit" class="btn btn-success btn-circle"><i class="fas fa-check"></i></button>
-                </div>
-            ';
+                </div>';
+             
         }
         
         //ACTUALIZAR PRODUCTO
@@ -122,7 +141,8 @@
                                         "descripcion"=>$_POST["descripcionEditar"],
                                         "precio_venta"=>$_POST["precio_ventaEditar"],
                                         "precio_compra"=>$_POST["precio_compraEditar"],
-                                        "inventario"=>$_POST["inventarioEditar"]);
+                                        "inventario"=>$_POST["inventarioEditar"],
+                                        "id_categoria"=>$_POST["categoriaEditar"]);
                 $respuesta = DatosProd::mdlactualizarProducto($datosControlador,"productos");    
                 
                 if($respuesta == "success"){

@@ -35,7 +35,7 @@
 
         //Modelo Vista CATEGORIAS
         //REALIZA UNA CONSULTA A LA TABLA CATEGORIAS
-        public function mdlverCategorias($tabla){
+        static public function mdlverCategorias($tabla){
             $stmt = Conexion::conectar()->prepare("SELECT id, nombre FROM $tabla");
             $stmt->execute();
 
@@ -45,10 +45,31 @@
             $stmt->close();
         }
 
+        static public function mdlCategoria($tabla,$id){
+
+            if($id != null){
+            $stmt = Conexion::conectar()->prepare("SELECT id, nombre FROM $tabla WHERE id = $id");
+            $stmt->execute();
+
+            //fetcAll(): obtiene todas las filas de un conjunto  de resultados  asociado al objeto PDO statment (stmt)
+            return $stmt->fetch();
+            }else{
+            $stmt = Conexion::conectar()->prepare("SELECT id, nombre FROM $tabla");
+            $stmt->execute();
+    
+                //fetcAll(): obtiene todas las filas de un conjunto  de resultados  asociado al objeto PDO statment (stmt)
+            return $stmt->fetchAll();
+            }
+
+            $stmt->close();
+        }
+
+        
+
         //Modelo editar CATEGORIA
         //REALIZA UNA SIMPLE CONSULTA DEL LA CATEGORIA QUE FUE SELECCIONADO
         
-        public function mdleditarCategoria($datoModelo, $tabla){
+       static public function mdleditarCategoria($datoModelo, $tabla){
             $stmt = Conexion::conectar()->prepare("SELECT id, nombre FROM $tabla WHERE id = :id");
             $stmt->bindParam(":id", $datoModelo, PDO::PARAM_INT);
             $stmt->execute();
