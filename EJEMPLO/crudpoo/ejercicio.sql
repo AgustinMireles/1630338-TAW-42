@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-05-2020 a las 15:52:36
+-- Tiempo de generación: 22-05-2020 a las 16:08:03
 -- Versión del servidor: 10.1.28-MariaDB
 -- Versión de PHP: 7.1.11
 
@@ -44,6 +44,7 @@ CREATE TABLE `estudiante` (
   `cedula` varchar(40) NOT NULL,
   `nombre` varchar(120) NOT NULL,
   `apellidos` varchar(120) NOT NULL,
+  `id_carrera` int(11) NOT NULL,
   `promedio` float NOT NULL,
   `edad` int(11) NOT NULL,
   `fecha` date NOT NULL
@@ -53,9 +54,9 @@ CREATE TABLE `estudiante` (
 -- Volcado de datos para la tabla `estudiante`
 --
 
-INSERT INTO `estudiante` (`id`, `cedula`, `nombre`, `apellidos`, `promedio`, `edad`, `fecha`) VALUES
-(3, '121', 'jesus', 'limon', 1.2, 30, '2019-05-19'),
-(4, '1202', 'Juan', 'Montes', 2.4, 20, '1992-11-20');
+INSERT INTO `estudiante` (`id`, `cedula`, `nombre`, `apellidos`, `id_carrera`, `promedio`, `edad`, `fecha`) VALUES
+(3, '121', 'jesus', 'limon', 0, 1.2, 30, '2019-05-19'),
+(4, '1202', 'Juan', 'Montes', 0, 2.4, 20, '1992-11-20');
 
 -- --------------------------------------------------------
 
