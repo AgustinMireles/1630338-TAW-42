@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-05-2020 a las 16:08:03
+-- Tiempo de generación: 22-05-2020 a las 16:17:31
 -- Versión del servidor: 10.1.28-MariaDB
 -- Versión de PHP: 7.1.11
 
@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `carrera` (
   `id` int(11) NOT NULL,
-  `nombre_carrera` int(11) NOT NULL
+  `nombre_carrera` varchar(80) NOT NULL,
+  `id_universidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
