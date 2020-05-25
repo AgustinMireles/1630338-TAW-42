@@ -36,9 +36,9 @@
                     <div class="col-sm-6">
                     <select name="txt_universidad" id="txt_universidad" class="form-control">                            
                     <?php
-                            foreach($universidad as $data){
+                            foreach($universidad as $uni){
                             //foreach(datos as $key => $item){    
-                            echo'<option value="'.$data['id'].'">'.$data['nombre_universidad'].'</option>';
+                            echo'<option value="'.$uni['id'].'">'.$uni['nombre_universidad'].'</option>';
                             }
                     ?>
                      </select> 

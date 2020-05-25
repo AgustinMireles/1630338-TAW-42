@@ -34,7 +34,7 @@ class login_controller{
                     @session_start();
                             $_SESSION["validar"] = "ok";
                             /**redireccionandolo al index donde mostrara los el menu principal */
-                            echo "<script>location.href='index.php?m=estudiante';</script>";
+                            echo "<script>location.href='index.php?m=estudiante'</script>";
                             die();
             }
     }

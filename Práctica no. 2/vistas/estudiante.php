@@ -59,9 +59,9 @@
                     <div class="col-sm-6">
                     <select name="txt_carrera" id="txt_carrera" class="form-control">                            
                     <?php
-                            foreach($carrera as $data){
+                            foreach($carrera as $car){
                             //foreach(datos as $key => $item){    
-                            echo'<option value="'.$data['id'].'">'.$data['nombre_carrera'].'</option>';
+                            echo'<option value="'.$car['id'].'">'.$car['nombre_carrera'].'</option>';
                             }
                     ?>
                      </select> 

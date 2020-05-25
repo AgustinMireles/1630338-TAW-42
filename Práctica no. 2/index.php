@@ -1,5 +1,6 @@
 <?php
 
+    ob_start();
     /*REQUERIMOS USO DEL LOS CONTROLADORES */
     require_once('bd/conexion.php');
     require_once('controlador/estudiante_controller.php');
@@ -52,5 +53,5 @@
 
 
 
-
+ob_end_flush();
 ?>
