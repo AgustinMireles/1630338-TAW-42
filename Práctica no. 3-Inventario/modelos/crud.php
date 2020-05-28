@@ -58,7 +58,7 @@
             $stmt->bindParam(":usuario",$datosModel["usuario"],PDO::PARAM_STR);
             $stmt->bindParam(":contra",$datosModel["contra"],PDO::PARAM_STR);
             $stmt->bindParam(":email",$datosModel["email"],PDO::PARAM_STR);
-            $stmt->bindParam(":id",$datosModel["id"],PDO::PARAM_STR);
+            $stmt->bindParam(":id",$datosModel["id"],PDO::PARAM_INT);
 
             if($stmt->execute()){
                 return "success";
