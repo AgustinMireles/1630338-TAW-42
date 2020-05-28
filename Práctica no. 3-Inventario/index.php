@@ -1,15 +1,11 @@
 <?php
-ob_start();
-//Invocacion a los metódos
-require_once "modelos/enlaces.php";
-require_once "modelos/crud.php";
-require_once "modelos/crudProd.php";
+    ob_start();
 
-//Controladores
-//Creación de los objetos, que es la lógica del negocio
-require_once "controladores/controlador.php";
+    require_once "controladores/controlador.php";
+    require_once "modelos/enlaces.php";
+    //require_once "modelos/crud.php";
 
-//
-$mvc->mdlenlacesPaginasModel();
+    $mvc = new MvcController();
+    $mvc -> plantilla();
 
 ?>
