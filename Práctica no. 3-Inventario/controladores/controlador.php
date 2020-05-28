@@ -218,7 +218,7 @@
                                     <i class="icon fas fa-check"></i>
                                     ¡Exito!
                                 </h5>
-                                Usuario editado con écito.
+                                Usuario editado con éxito.
                                </div>
                              </div>
                      ';
@@ -238,6 +238,47 @@
                  ';
                  }
              }
+         }
+
+
+
+         public function eliminarUserController(){
+             if(isset($_GET["idBorrar"])){
+                 $datosController = $_GET["idBorrar"];
+                 $respuesta = Datos::eliminarUserModel($datosController,"usuarios");
+                
+                 if ($respuesta == "success"){
+                     echo'
+                     <div class="col-md-6 mt-3">
+                     <div class="alert alert-success alert-dismissible">
+                         <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x
+                         </button>
+                         <h5>
+                             <i class="icon fas fa-check"></i>
+                             ¡Exito!
+                         </h5>
+                         Usuario eliminado con éxito.
+                        </div>
+                      </div>
+
+                     ';
+                 } else {
+                    echo'
+                    <div class="col-md-6 mt-3">
+                        <div class="alert alert-danger alert-dismissible">
+                            <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x
+                            </button>
+                            <h5>
+                                <i class="icon fas fa-ban"></i>
+                                ¡Error!
+                            </h5>
+                            Se ha producido un error al eliminar.
+                           </div>
+                         </div>
+                 ';
+
+                 }
+                }
          }
 
 
