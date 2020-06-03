@@ -1,167 +1,117 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-  <title>Sistema de inventario</title>
-
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
-  <link rel="icon" href="vistas/assets/img/plantilla/icono-negro.png">
-
-   <!--=====================================
-  PLUGINS DE CSS
-  ======================================-->
-
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="vistas/assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="vistas/assets/bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="vistas/assets/bower_components/Ionicons/css/ionicons.min.css">
-
-  <!-- Theme style -->
-  <link rel="stylesheet" href="vistas/assets/dist/css/AdminLTE.css">
-  
-  <!-- AdminLTE Skins -->
-  <link rel="stylesheet" href="vistas/assets/dist/css/skins/_all-skins.min.css">
-
-  <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
-   <!-- DataTables -->
-  <link rel="stylesheet" href="vistas/assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-  <link rel="stylesheet" href="vistas/assets/bower_components/datatables.net-bs/css/responsive.bootstrap.min.css">
-
-  
-
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="vistas/assets/plugins/iCheck/all.css">
-
-   <!-- Daterange picker -->
-  <link rel="stylesheet" href="vistas/assets/bower_components/bootstrap-daterangepicker/daterangepicker.css">
-
-  <!-- Morris chart -->
-  <link rel="stylesheet" href="vistas/assets/bower_components/morris.js/morris.css">
-
-  <!--=====================================
-  PLUGINS DE JAVASCRIPT
-  ======================================-->
-
-  <!-- jQuery 3 -->
-  <script src="vistas/assets/bower_components/jquery/dist/jquery.min.js"></script>
-  
-  <!-- Bootstrap 3.3.7 -->
-  <script src="vistas/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-  <!-- FastClick -->
-  <script src="vistas/assets/bower_components/fastclick/lib/fastclick.js"></script>
-  
-  <!-- AdminLTE App -->
-  <script src="vistas/assets/dist/js/adminlte.min.js"></script>
-
-  <!-- DataTables -->
-  <script src="vistas/assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script src="vistas/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script src="vistas/assets/bower_components/datatables.net-bs/js/dataTables.responsive.min.js"></script>
-  <script src="vistas/assets/bower_components/datatables.net-bs/js/responsive.bootstrap.min.js"></script>
-
-  
-
-  <!-- SweetAlert 2 -->
-  <script src="vistas/assets/plugins/sweetalert2/sweetalert2.all.js"></script>
-   <!-- By default SweetAlert2 doesn't support IE. To enable IE 11 support, include Promise polyfill:-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
-
-  <!-- iCheck 1.0.1 -->
-  <script src="vistas/assets/plugins/iCheck/icheck.min.js"></script>
-
-  <!-- InputMask -->
-  <script src="vistas/assets/plugins/input-mask/jquery.inputmask.js"></script>
-  <script src="vistas/assets/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-  <script src="vistas/assets/plugins/input-mask/jquery.inputmask.extensions.js"></script>
-
-  <!-- jQuery Number -->
-  <script src="vistas/assets/plugins/jqueryNumber/jquerynumber.min.js"></script>
-
-  <!-- daterangepicker http://www.daterangepicker.com/-->
-  <script src="vistas/assets/bower_components/moment/min/moment.min.js"></script>
-  <script src="vistas/assets/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-
-  <!-- Morris.js charts http://morrisjs.github.io/morris.js/-->
-  <script src="vistas/assets/bower_components/raphael/raphael.min.js"></script>
-  <script src="vistas/assets/bower_components/morris.js/morris.min.js"></script>
-
-  <!-- ChartJS http://www.chartjs.org/-->
-  <script src="vistas/assets/bower_components/Chart.js/Chart.js"></script>
-
-
-
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Inventarios | TAW | UPV</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="vistas/assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="vistas/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="vistas/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="vistas/assets/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="vistas/assets/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="vistas/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="vistas/assets/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="vistas/assets/plugins/summernote/summernote-bs4.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="vistas/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
 </head>
 
-<!--=====================================
-CUERPO DOCUMENTO
-======================================-->
-
-<body class="hold-transition skin-blue sidebar-mini">
- 
-<div class="wrapper">
-
-<!-- Main Header -->
-<?php 
-   include "vistas/modulos/header.php";
-?>
-<!--FIN HEADER-->
-
-<!-- Left side column. contains the logo and sidebar -->
-<?php 
-   include "vistas/modulos/menu.php";
-?>
-<!--FIN NAVVAR-LATERAL-->
-
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-  <!-- Content Header (Page header) -->
- 
-
-  <!-- Main content -->
-  <section class="content container-fluid">
-    
-  
-    <!--------------------------
-      | Your Page Content Here |
-      -------------------------->
-   <?php 
-   $mvc = new MvcController();
-    $mvc -> enlacesPaginasController();
+<body class="hold-transition sidebar-mini layout-fixed">
+    <?php
+    /*-- Se inicia la sesión y se verifica que se haya iniciado sesión correctamente para mostrar el tablero y el menu principal --*/
+    session_start();
+    if (isset($_SESSION['validar']) && $_SESSION['validar'] == true) {
+        include "modulos/navegacion.php";
     ?>
- 
-
-  </section>
-  <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
-
-<!-- Main Footer -->
-<?php 
-   include "vistas/modulos/footer.php";
-?>
-<!--</footer>-->
-
-<!-- Control Sidebar -->
-
-
-<div class="control-sidebar-bg"></div>
-</div>
-
-
-  
-
-<script src="vistas/js/plantilla.js"></script>
+        <div class="wrapper">
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Main content -->
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row mr-3 mt-2 mb-2">
+                            <?php
+                            /*-- Se verifica que la vista actual sea el tablero, en ese caso se muestra el titulo de la vista --*/
+                            if ($_GET['action'] == 'tablero') {
+                            ?>
+                                <div class="col-sm-12">
+                                    <h1><b>Tablero</b></h1>
+                                </div>
+                            <?php
+                            }
+                            ?>
+                            <!--Aquí va el contenido de la página-->
+                        <?php
+                    }
+                    $mvc = new MvcController();
+                    $mvc->enlacesPaginasController();
+                        ?>
+                        </div>
+                </section>
+            </div>
+        </div>
+        <?php
+        /*-- Se verifica que la vista actual no sea el login, en caso de que sea el login, el footer del template no se muestra --*/
+        if ($_GET['action'] != 'ingresar') {
+        ?>
+        <?php
+        }
+        ?>
+        <!-- jQuery -->
+        <script src="vistas/assets/plugins/jquery/jquery.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="vistas/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+        <script>
+            $.widget.bridge('uibutton', $.ui.button)
+        </script>
+        <!-- Bootstrap 4 -->
+        <script src="vistas/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- ChartJS -->
+        <script src="vistas/assets/plugins/chart.js/Chart.min.js"></script>
+        <!-- Sparkline -->
+        <script src="vistas/assets/plugins/sparklines/sparkline.js"></script>
+        <!-- JQVMap -->
+        <script src="vistas/assets/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <script src="vistas/assets/plugins/jqvmap/maps/jquery.vmap.world.js"></script>
+        <!-- jQuery Knob Chart -->
+        <script src="vistas/assets/plugins/jquery-knob/jquery.knob.min.js"></script>
+        <!-- daterangepicker -->
+        <script src="vistas/assets/plugins/moment/moment.min.js"></script>
+        <script src="vistas/assets/plugins/daterangepicker/daterangepicker.js"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="vistas/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Summernote -->
+        <script src="vistas/assets/plugins/summernote/summernote-bs4.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="vistas/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="vistas/assets/dist/js/adminlte.js"></script>
+        <!-- DataTables -->
+        <script src="vistas/assets/plugins/datatables/jquery.dataTables.js"></script>
+        <script src="vistas/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+        <!-- page script -->
+        <script>
+            $(function() {
+                $("#example1").DataTable();
+                $("#example2").DataTable();
+            });
+        </script>
 </body>
+
 </html>
