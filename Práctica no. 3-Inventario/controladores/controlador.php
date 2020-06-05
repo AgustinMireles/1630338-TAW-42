@@ -411,7 +411,7 @@
         public function insertarProductController(){
             if(isset($_POST["codigotxt"])){
                 $datosController = array("codigo"=>$_POST["codigotxt"],"precio"=>$_POST["preciotxt"],"stock"=>$_POST["stocktxt"],
-                "categoria"=>$_POST["categoria"],"nombre"=>$_POST["nombretxt"]); $respuesta = Datos::insertarProductsController($datosController,"productos");
+                "categoria"=>$_POST["categoria"],"nombre"=>$_POST["nombretxt"]); $respuesta = Datos::insertarProductsModel($datosController,"productos");
                 if($respuesta == "success"){
                     $respuesta3 = Datos::ultimoProductsModel("productos");
                     $datosController2 = array("user"=>$_SESSION["id"],"cantidad"=>$_POST["stocktxt"],"producto"=>$respuesta3["id"],
