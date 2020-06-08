@@ -66,7 +66,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="index.php?action=productos" class="nav-link">
+                <a href="index.php?action=inventario" class="nav-link">
                     <i class="nav-icon fas fa-box"></i>
                     <p>Productos</p>
                 </a>

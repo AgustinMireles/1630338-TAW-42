@@ -316,9 +316,9 @@
               ';
                      }
 
-         
+                     
         public function vistaProductsController(){
-            $respuesta = Datos::vistasProductsModel("productos");
+            $respuesta = Datos::vistaProductsModel("productos");
             foreach ($respuesta as $row => $item){
                 echo'
                     <tr>
@@ -341,13 +341,16 @@
                         <td>'.$item["precio"].'</td>
                         <td>'.$item["stock"].'</td>
                         <td>'.$item["categoria"].'</td>
-                        <td><a href="index.php?action=inventario$idProductAdd='.$item["id"].'"
+
+                        <td><a href="index.php?action=inventario&idProductAdd='.$item["id"].'"
                         class="btn btn-warning btn-sm btn-icon" title="Agregar Stock"
                         data-toggle="tooltip"><i class="fa fa-edit"></i></a></td>
-                        <td><a href="index.php?action=inventario$idProductDel='.$item["id"].'"
+
+                        <td><a href="index.php?action=inventario&idProductDel='.$item["id"].'"
                         class="btn btn-warning btn-sm btn-icon" title="Quitar Stock"
                         data-toggle="tooltip"><i class="fa fa-edit"></i></a></td>
 
+                    </tr>
                 ';
             }
         }
@@ -358,7 +361,7 @@
             <div class="col-md-6 mt-3">
                 <div class="card card-primary">
                         <div class="card-header">
-                            <h4><b>Registro</b> de Produtos</h4>
+                            <h4><b>Registro</b> de Productos</h4>
                         </div>
                         <div class="card-body">
                             <form method="post" action="index.php?action=inventario">
@@ -389,7 +392,7 @@
 
                                 <div class="form-group">
                                     <label for="uemailtxt">Categoría:</label>
-                                    <select class="form-control" id="categoria">
+                                    <select class="form-control" name="categoria" id="categoria">
                                             <?php
                                                 $respuesta_categoria = Datos::obtenerCategoryModel("categorias");
                                                 foreach ($respuesta_categoria as $row => $item){
@@ -415,8 +418,8 @@
                 if($respuesta == "success"){
                     $respuesta3 = Datos::ultimoProductsModel("productos");
                     $datosController2 = array("user"=>$_SESSION["id"],"cantidad"=>$_POST["stocktxt"],"producto"=>$respuesta3["id"],
-                    "note"=>$_SESSION["nombre_usuario"]."agrego/compro","reference"=>$_POST["referenciatxt"]);
-                    $respuesta2 = Datos::insertarHitorialModel($datosController2,"historial");
+                    "note"=>$_SESSION["nombre_usuario"]." "."agrego nuevo producto","reference"=>$_POST["referenciatxt"]);
+                    $respuesta2 = Datos::insertarHistorialModel($datosController2,"historial");
                     echo'
                       <div class="col-md-6 mt-3">
                         <div class="alert alert-success alert-dismissible">
@@ -451,10 +454,10 @@
   llenando la informacion correspondiente y empezando a editar dichos campos a partir de los formularios el array 
   de dato solo guarda el get del boton editar que en este caso es el id del producto y se envia el modelo de edicion
   y se pasa por el metodo form al igual que los demas datos */
-    public function editarProductController()
-    {
+
+    public function editarProductController(){
         $datosController = $_GET["idProductEditar"];
-        $respuesta = Datos::editarProductsModel($datosController, "productos");
+        $respuesta = Datos::editarProductsModel($datosController,"productos");
     ?>
         <div class="col-md-6 mt-3">
             <div class="card card-warning">
@@ -462,10 +465,9 @@
                     <h4><b>Editor</b> de Productos</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="index.php?action=inventario">
+                    <form method="post" action="index.php?action=inventario" >
                         <div class="form-group">
-                            <input type="hidden" name="idProductEditar" class="form-control" value="<?php
-                                                                                                    echo $respuesta["id"]; ?>" required>
+                            <input type="hidden" name="idProductEditar" class="form-control" value="<?php echo $respuesta["id"]; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="codigotxtEditar">Codigo: </label>
@@ -494,7 +496,7 @@
                                 $respuesta_categoria = Datos::obtenerCategoryModel("categorias");
                                 foreach ($respuesta_categoria as $row => $item) {
                                 ?>
-                                    <option value="<?php echo $item["id"]; ?>">?php echo $item["categoria"];?></ option>
+                                    <option value="<?php echo $item["id"]; ?>"><?php echo $item["categoria"];?></ option>
                                     <?php
                                 }
                                     ?>
@@ -515,17 +517,23 @@ de correcto y pasara a llenar dichos datos en el modelo de insertar historial mo
 y mostrara mensaje de error */
 public function actualizarProductController()
 {
-    if (isset($_POST["codigotxteditar"])) {
+    
+    if (isset($_POST["codigotxtEditar"])) {
         $datosController = array(
-            "id" => $_POST["idProductEditar"], "codigo" => $_POST["codigotxteditar"],
-            "precio" => $_POST["preciotxteditar"], "stock" => $_POST["stocktxteditar"], "categoria" => $_POST["categoriaeditar"], "nombre" => $_POST["nombretxteditar"]
+            "id" => $_POST["idProductEditar"], 
+            "codigo" => $_POST["codigotxtEditar"],
+            "precio" => $_POST["preciotxteditar"], 
+            "stock" => $_POST["stocktxtEditar"], 
+            "categoria" => $_POST["categoriaeditar"],
+             "nombre" => $_POST["nombretxteditar"]
         );
-        $respuesta = Datos::actualizarPorductsModel($datosController, "productos");
+        $respuesta = Datos::actualizarProductsModel($datosController, "productos");
+
         if ($respuesta == "success") {
             $datosController2 = array(
-                "user" => $_SESSION["id"], "cantidad" => $_POST["stocktxteditar"],
-                "producto" => $_POST["idProductEditar"], "note" => $_SESSION["nombre de usuario"] . "agrego/compro",
-                "refrence" => $_POST["referenciatxteditar"]
+                "user" => $_SESSION["id"], "cantidad" => $_POST["stocktxtEditar"],
+                "producto" => $_POST["idProductEditar"], "note" => $_SESSION["nombre_usuario"]. " " . "agrego/compro",
+                "reference" => $_POST["referenciatxteditar"]
             );
             $respuesta2 = Datos::insertarHistorialModel($datosController2, "historial");
             echo '
@@ -640,11 +648,13 @@ historial, si el update sale correcto y agrega los productos del stock entonces 
 tabla historial, si todo sale bien mostrara un mensaje de error o de correcto dependiendo de la respuesta */
 public function actualizar1StockController()
 {
+
     if (isset($_POST["addstocktxt"])) {
         $datosController = array("id" => $_POST["idProductAdd"], "stock" => $_POST["addstocktxt"]);
         $respuesta = Datos::pushProductsModel($datosController, "productos");
         if ($respuesta == "success") {
-            $datosController2 = array("user" => $_SESSION["id"], "cantidad" => $_POST["addstocktxt"], "producto" => $_POST["idProductAdd"], "note" => $_SESSION["nombre_usuario"] . "agrego/compro", "reference" => $_POST["referenciatxtadd"]);
+            $datosController2 = array("user" => $_SESSION["id"], "cantidad" => $_POST["addstocktxt"], "producto" => $_POST["idProductAdd"],
+             "note" => $_SESSION["nombre_usuario"] . " " . "agrego", "reference" => $_POST["referenciatxtadd"]);
             $respuesta2 = Datos::insertarHistorialModel($datosController2, "historial");
             echo '
        <div class="col-md-6 mt-3">
@@ -690,7 +700,8 @@ public function actualizar2StockController()
         $datosController = array("id" => $_POST["idProductDel"], "stock" => $_POST["delstocktxt"]);
         $respuesta = Datos::pullProductsModel($datosController, "productos");
         if ($respuesta ==  "success") {
-            $datosController2 = array("user" => $_SESSION["id"], "cantidad" => $_POST["delstocktxt"], "producto" => $_POST["idProductDel"], "note" => $_SESSION["nombre_usuario"] . "quito", "reference" => $_POST["referenciatxtdel"]);
+            $datosController2 = array("user" => $_SESSION["id"], "cantidad" => $_POST["delstocktxt"], "producto" => $_POST["idProductDel"],
+             "note" => $_SESSION["nombre_usuario"] ." " . "quito", "reference" => $_POST["referenciatxtdel"]);
             $respuesta2 = Datos::insertarHistorialModel($datosController2, "historial");
             echo '
             <div class="col-md-6 mt-3">
@@ -741,8 +752,8 @@ public function delProductController()
                         <input class="form-control" name="delstocktxt" id="delstocktxt" type="number" min="1" max="<?php echo $respuesta["stock"]; ?>" value="<?php echo $respuesta["stock"]; ?>" required placeholder="Stock de Producto">
                     </div>
                     <div class="form-group">
-                        <label for="referenciatxtadd">Motivo: </label>
-                        <input class="form-control" name="referenciatxtadd" id="referenciatxtadd" type="text" require placeholder="Referencia del producto">
+                        <label for="referenciatxtdel">Motivo: </label>
+                        <input class="form-control" name="referenciatxtdel" id="referenciatxtdel" type="text" require placeholder="Referencia del producto">
                     </div>
                     <button class="btn btn-primary" type="submit">Realizar Cambio</button>
                 </form>
@@ -760,12 +771,12 @@ public function vistaHistorialController()
     foreach ($respuesta as $row => $item) {
         echo '
           <tr>
-            <td>' . $item["usuario"] . '</td>  
-            <td>' . $item["producto"] . '</td> 
-            <td>' . $item["nota"] . '</td>  
-            <td>' . $item["cantidad"] . '</td> 
-            <td>' . $item["referencia"] . '</td>
-            <td>' . $item["fecha"] . '</td>
+            <td>'.$item["usuario"].'</td>  
+            <td>'.$item["producto"].'</td> 
+            <td>'.$item["nota"].'</td>  
+            <td>'.$item["cantidad"].'</td> 
+            <td>'.$item["referencia"].'</td>
+            <td>'.$item["fecha"].'</td>
           </tr>
             ';
     }
@@ -802,7 +813,7 @@ public function registrarCategoryController(){
                 </div>
 
                 <div class="card-body">
-                    <form action="index.php?action=categorias"  method="post"></form>
+                    <form method="post" action="index.php?action=categorias" >
 
                             <div class="form-group">
                                 <label for="ncategoriatxt">Nombre de la Categoría</label>
@@ -815,18 +826,19 @@ public function registrarCategoryController(){
                                 <input type="text" name="dcategoriatxt" id="dcategoriatxt" class="form-control"
                                 placeholder="Ingresar la descipción de la categoría">
                             </div>
+
                         <button class="btn btn-primary" type="submit">Agregar</button>
                     </form>
                 </div>
          </div>
-</div>
+    </div>
    <?php 
 }
 
 
 public function insertarCategoryController(){
     if(isset($_POST["ncategoriatxt"]) && isset($_POST["dcategoriatxt"])){
-        $datosController = array("nmbre_categoria"=>$_POST["ncategoriatxt"],
+        $datosController = array("nombre_categoria"=>$_POST["ncategoriatxt"],
         "descripcion_categoria"=>$_POST["dcategoriatxt"]);
         $respuesta = Datos::insertarCategoryModel($datosController,"categorias");
         if($respuesta == "success"){
@@ -892,7 +904,7 @@ public function editarCategoryController(){
                         id="dcategoriatxt" placeholder="Ingresar la descripcion de la categoria" value="<?php
                         echo $respuesta["descripcion_categoria"]; ?>" required>
                     </div>
-                    <button class="bnt btn-primary" type="submit">Editar</button>
+                    <button class="btn btn-primary" type="submit">Editar</button>
 
                 </form>
             </div>
@@ -938,8 +950,8 @@ public function actualizarCategoryController(){
 }
 
 public function eliminarCategoryController(){
-    if(isset($_GET["idBorrar"])){
-        $datosController = $_GET["idBorrar"];
+    if(isset($_GET["idCategoryBorrar"])){
+        $datosController = $_GET["idCategoryBorrar"];
         $respuesta = Datos::eliminarCategoryModel($datosController,"categorias");
         if($respuesta == "success"){
             echo '

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-05-2020 a las 07:09:33
+-- Tiempo de generación: 08-06-2020 a las 11:29:43
 -- Versión del servidor: 10.1.28-MariaDB
 -- Versión de PHP: 7.1.11
 
@@ -55,8 +55,17 @@ CREATE TABLE `categorias` (
   `id_category` int(11) NOT NULL,
   `name_category` varchar(255) CHARACTER SET utf8 NOT NULL,
   `description_category` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `date_added` datetime NOT NULL
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `categorias`
+--
+
+INSERT INTO `categorias` (`id_category`, `name_category`, `description_category`, `date_added`) VALUES
+(1, 'jugos', 'nuevo', '0000-00-00 00:00:00'),
+(3, 'papas sabritas', 'nuevas', '0000-00-00 00:00:00'),
+(4, 'lacteos', 'lala ', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -94,11 +103,22 @@ CREATE TABLE `historial` (
   `id_historial` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `date` datetime NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` varchar(255) NOT NULL,
   `reference` varchar(100) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `historial`
+--
+
+INSERT INTO `historial` (`id_historial`, `id_producto`, `user_id`, `date`, `note`, `reference`, `quantity`) VALUES
+(40, 17, 7, '2020-06-08 04:23:04', 'Jojo Jojo agrego nuevo producto', '12', 12),
+(41, 18, 7, '2020-06-08 04:24:52', 'Jojo Jojo agrego nuevo producto', 'si', 12),
+(42, 19, 7, '2020-06-08 04:25:02', 'Jojo Jojo agrego nuevo producto', 'si', 12),
+(43, 20, 7, '2020-06-08 04:25:26', 'Jojo Jojo agrego nuevo producto', 'si', 12),
+(44, 21, 7, '2020-06-08 04:25:47', 'Jojo Jojo agrego nuevo producto', 'si', 12);
 
 -- --------------------------------------------------------
 
@@ -108,13 +128,26 @@ CREATE TABLE `historial` (
 
 CREATE TABLE `productos` (
   `id_product` int(11) NOT NULL,
-  `code_producto` char(20) NOT NULL,
+  `code_product` char(20) NOT NULL,
   `name_product` char(255) NOT NULL,
-  `date_added` datetime NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `price_product` double NOT NULL,
   `stock` int(11) NOT NULL,
   `id_category` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id_product`, `code_product`, `name_product`, `date_added`, `price_product`, `stock`, `id_category`) VALUES
+(1, 'wqwq', 'sad', '2020-06-08 03:59:41', 12, 12, 1),
+(12, '123123', 'coca-co', '2020-06-24 00:00:00', 12, 11, 1),
+(17, '21312', 'rancheritos', '2020-06-08 04:23:04', 20, 12, 3),
+(18, '123213', 'chetos', '2020-06-08 04:24:52', 12, 12, 3),
+(19, '123', 'sda', '2020-06-08 04:25:02', 12, 12, 1),
+(20, '123', 'sda', '2020-06-08 04:25:26', 12, 12, 1),
+(21, '123', 'sda', '2020-06-08 04:25:47', 12, 12, 1);
 
 -- --------------------------------------------------------
 
@@ -156,8 +189,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`user_id`, `firstname`, `lastname`, `user_name`, `user_password`, `user_email`, `date_added`) VALUES
-(1, 'jesus', 'limon', 'admin', '123', 'crisrl@lice.com', '2020-05-20 00:00:00'),
-(5, 'asds', 'asd', 'lol', '$2y$10$.EMK/aJbdGJBsUkziM4drO1Byn.n/45E9uFqoBtA/UMTGxvdM64vO', 'crisrl@live.com', '0000-00-00 00:00:00');
+(7, 'Jojo', 'Jojo', 'jojo', '$2y$10$yDpx/S3/Jc7XilXXoHEdkO.FXGAyxZSnHAPZj3crVIy3VvnWa4H3.', 'crisrl@live.com.mx', '0000-00-00 00:00:00');
 
 --
 -- Índices para tablas volcadas
@@ -188,14 +220,16 @@ ALTER TABLE `estudiante`
 --
 ALTER TABLE `historial`
   ADD PRIMARY KEY (`id_historial`),
-  ADD KEY `id_producto` (`id_producto`);
+  ADD KEY `id_producto` (`id_producto`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
   ADD PRIMARY KEY (`id_product`),
-  ADD KEY `code_producto` (`code_producto`);
+  ADD KEY `code_producto` (`code_product`),
+  ADD KEY `id_category` (`id_category`);
 
 --
 -- Indices de la tabla `universidad`
@@ -223,7 +257,7 @@ ALTER TABLE `carrera`
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id_category` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_category` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `estudiante`
@@ -235,7 +269,13 @@ ALTER TABLE `estudiante`
 -- AUTO_INCREMENT de la tabla `historial`
 --
 ALTER TABLE `historial`
-  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT de la tabla `productos`
+--
+ALTER TABLE `productos`
+  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `universidad`
@@ -247,7 +287,7 @@ ALTER TABLE `universidad`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
@@ -269,7 +309,8 @@ ALTER TABLE `estudiante`
 -- Filtros para la tabla `historial`
 --
 ALTER TABLE `historial`
-  ADD CONSTRAINT `product` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_product`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `historial_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`user_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `historial_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_product`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
