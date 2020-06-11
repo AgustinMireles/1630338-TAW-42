@@ -303,7 +303,39 @@
 
 
 
+
+
+           public function buscarProductosModel($buscar,$tabla){
+           
+           if($buscar == ''){    
+           $stmt = Conexion::conectar()->prepare("SELECT id_product  AS 'id', name_product AS 'nombre_producto' 
+           FROM $tabla order by id_product");
+           $stmt->execute();
+           return $stmt->fetchAll();
+           }
+           else{
+           $stmt = Conexion::conectar()->prepare("SELECT id_product  AS 'id', name_product AS 'nombre_producto' 
+           FROM $tabla WHERE name_product LIKE '%$buscar%' order by id_product");
+           $stmt->execute();
+           return $stmt->fetchAll();    
+           }
+           }
+           
+
+
+           public function mostrarProductoModel($tabla,$valor){
+           $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE id_product = $valor");
+
+		   $stmt -> execute();
+
+           return $stmt -> fetch();
+           }
+
     }
+
+
+
+
 
 
 

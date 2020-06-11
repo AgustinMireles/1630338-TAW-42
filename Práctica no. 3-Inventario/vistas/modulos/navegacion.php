@@ -73,6 +73,13 @@
             </li>
 
             <li class="nav-item">
+                <a href="index.php?action=ventas" class="nav-link">
+                    <i class="nav-icon fab fa-shopify"></i>
+                    <p>Ventas</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="index.php?action=salir" class="nav-link">
                     <i class="nav-icon fas fa-sign-out-alt"></i>
                     <p>Salir</p>

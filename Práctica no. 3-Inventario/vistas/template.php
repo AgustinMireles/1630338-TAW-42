@@ -9,7 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="vistas/assets/plugins/fontawesome-free/css/all.min.css">
+    
+    
     <!-- Ionicons -->
+
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bbootstrap 4 -->
     <link rel="stylesheet" href="vistas/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -106,11 +109,17 @@
         <script src="vistas/assets/plugins/datatables/jquery.dataTables.js"></script>
         <script src="vistas/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
         <!-- page script -->
+        <script src="vistas/js/ventas.js"></script>
+     
         <script>
             $(function() {
                 $("#example1").DataTable();
                 $("#example2").DataTable();
+            
             });
+
+        
+ 
         </script>
 </body>
 

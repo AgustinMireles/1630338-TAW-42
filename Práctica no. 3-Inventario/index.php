@@ -7,5 +7,8 @@
 
     $mvc = new MvcController();
     $mvc -> plantilla();
-
+/**subtotatl
+total
+desceunto
+iva */
 ?>

@@ -66,17 +66,18 @@ $inventario->eliminarProductController();
                                     <th>¿Eliminar Stock?</th>
                                 </tr>
                             </thead>
-                        <tbody>
-                        
-                            <?php
-                            $inventario->vistaProductsController();
-                            ?>
-                        </tbody>
-                    </table>
+                            <tbody>
+                            
+                                <?php
+                                $inventario->vistaProductsController();
+                                ?>
+                                
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        </div>                
-     </div>
+            </div>                
+        </div>
 </div>
  </div><!--/.container-fluid-->
 

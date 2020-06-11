@@ -19,7 +19,7 @@
  <div class="container-fluid">
     <div class="row mb-3">
         <div class="card card-secondary">
-            <div class="car-header">
+            <div class="card-header">
                 <h3 class="card-title">Usuarios</h3>
             </div>
             <div class="card-body">

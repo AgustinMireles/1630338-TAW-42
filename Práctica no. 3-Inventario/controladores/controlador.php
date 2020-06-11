@@ -50,8 +50,9 @@
                             </td>
                             <td>
                                 <a href="index.php?action=usuarios&idBorrar='.$item["id"].'" class="btn btn-danger
-                                btn-sm btn-icon" title="Eliminar" data-toggle="tooltip"<i class="fa fa-trash"></
-                                i></a>
+                                btn-sm btn-icon" title="Eliminar" data-toggle="tooltip">
+                                <i class="fa fa-trash"></i>
+                                </a>
                             </td>
                             <td>'.$item["firstname"].'</td>  
                             <td>'.$item["lastname"].'</td> 
@@ -979,11 +980,23 @@ public function eliminarCategoryController(){
                     Se ha producido un error al eliminar la categoría.
                 </div>
             </div>
+            
         ';
         }
     }
 }
+
+
+    public function buscarProductosController($buscar){
+            $respuesta = Datos::buscarProductosModel($buscar,"productos");
+            return $respuesta;    
+      
+    }
   
+    public function mostrarProductoController($valor){
+            $respuesta = Datos::mostrarProductoModel("productos",$valor);
+            return $respuesta;
+        }
 
     
 }
