@@ -1,15 +1,17 @@
-//Guarda los id de los productos que vamos agegando a la lista de venta
+/**GUARDA LOS ID DE LOS PRODUCTOS**/
 var a = [];
 
-$("#search-item-form").on("click", "button.boton-buscador", function() {
 
-    //acedo al valor que tiene el input del buscador
+/**EVENTO ENCARGADO DE HACER LA FUNCION DEL BUSCADOR**/
+$("#search-item-form").on("click", "button.boton-buscador", function() {
+    /**ACCEDE AL VALOR DEL INPUT BUSCADOR**/
     var buscar = $("input#buscar").val();
+
     var datos = new FormData();
+    /**AGREGAMOS EL VALOR DE LA VARIABLE buscar PARA QUE SE ENVIE POR METODO POST**/
     datos.append("buscar", buscar);
 
     $.ajax({
-
         url: "ajax/productos.ajax.php",
         method: "POST",
         data: datos,
@@ -20,12 +22,11 @@ $("#search-item-form").on("click", "button.boton-buscador", function() {
         success: function(respuesta) {
             //console.log("respuesta", respuesta);
 
-            //borramos el contenido de la lista para que no se vayan repitiendo
+            /**SI EXISTEN VALORES EN LA TABLA VAMOS ELIMINANDO PARA QUE NO SE REPITAN**/
             $("#filter-list").empty();
+            /**POR CADA PRODUCTO QUE EXISTA EN LA TABAL LE ASIGNAMOS SUS RESPECTIVAS ETIQUETAS CON SUS ATRIBUTOS**/
             $.each(respuesta, function(i, item) {
                 //console.log(item["id"]);
-
-
                 $("#filter-list").append(
                     '<div class="col-lg-2 col-md-3 col-xs-4  shop-items filter-add-product noselect text-center" data-order="null" data-codebar="3293947878994" style="padding: 5px; border-right: 1px solid rgb(222, 222, 222); border-bottom: 1px solid rgb(222, 222, 222); ">' +
                     '<p>' + item["nombre_producto"] + '<p/>' +
@@ -39,11 +40,11 @@ $("#search-item-form").on("click", "button.boton-buscador", function() {
 
             });
 
+            /**COMPROBAMOS SI EXISTE UN PRODUCTO EN LA TABLA QUE YA HAYA SIDO AGREGADO EN LA LISTA DE VENTAS
+             * REMOVIENDO LA CLASE BTN-SUCCES PARA QUE NO SE AGREGADA A LA LISTA DE VENTAS NUEVAMENTE**/
             $.each(a, function(i, item) {
                 $("button.agregarProducto[idAgregar='" + a[i].idProducto + "']").removeClass("btn-success agregarProducto");
                 $("button.agregarProducto[idAgregar='" + a[i].idProducto + "']").addClass("btn-default");
-
-
             });
             //console.log(a);
 
@@ -55,26 +56,29 @@ $("#search-item-form").on("click", "button.boton-buscador", function() {
 
 
 
-/**AGREGAR PRODUCTOS A LA VENTA */
+/**EVENTO ENCARAGADO DE AGREGAR PRODUCTOS A LA VENTA */
 $("#filter-list").on("click", "button.agregarProducto", function() {
+    /**ASGINAMOS EL ID DEL PRODUCTO AÑADIDO**/
     var idProducto = $(this).attr("idAgregar");
 
+    /*REMOVEMOS SU CLASE BTN-SUCCESS PARA QUE NO SEA AGREGADO**/
     $(this).removeClass("btn-success agregarProducto");
 
+    /**Y AGREGAMOS LA CLASE BTN-DEFAULT PARA QUE EL USUARIO NO PUEDA DAR CLICK A ELLA**/
     $(this).addClass("btn-default");
 
+    /**SI EXISTE PRODUCTOS EN LA LISTA DE VENTAS EL USUARIO PUEDE ACCEDER A LOS MODALES DE REALIZAR VENTA Y CANCELA VENTA**/
     $("button.venta").attr("data-target", "#modal-venta");
 
     $("button.cancelar").attr("data-target", "#modal-cancelar");
 
+    /**VAMOS HACIENDO UN PUSH AL ARREGLOS QUE DE IDS**/
     a.push({ "idProducto": idProducto });
     //console.log(a[1]);
     var datos = new FormData();
     datos.append("idProducto", idProducto);
 
-    /**HACER PETICION AJAX */
-
-
+    /**HACER PETICION AJAX PARA BUSCAR EL PRODUCTO CON EL ID SELECIONADO EN LA LISTA DE PRODUCTOS*/
     $.ajax({
 
         url: "ajax/productos.ajax.php",
@@ -86,6 +90,7 @@ $("#filter-list").on("click", "button.agregarProducto", function() {
         dataType: "json",
         success: function(respuesta) {
             // console.log("respuesta", respuesta);
+            /**TREMAOS LOS DATOS DEL PRODUCTO PARA MOSTRALOS EN LA LISTA DE VENTAS**/
             var idProducto = respuesta["id_product"]
             var nombre = respuesta["name_product"];
             var stock = respuesta["stock"];
@@ -107,19 +112,22 @@ $("#filter-list").on("click", "button.agregarProducto", function() {
 
 
 
-    })
+    }) /**FIN PETICION AJAX*/
 
 });
 
-/***QUITAR PRODUCTO DE LA VENTA*/
+/***EVENTO PARA QUITAR PRODUCTO DE LA VENTA*/
 $(".product-venta").on("click", ".quitarProducto", function() {
     //console.log("hola");
+    /**REMUEVE DE LA LISTA DE PRODUCTOS ES DECIR REMOVEMOS EL TR DE LA LISTA**/
     $(this).parent().parent().remove();
 
+    /**LE ASIGNAMOS LOS VALORES QUE TENIA POR DEFAULT ESTO CON EL FIN DE QUE EL USUARIO PODRA HACER CLICK DE NUEVO EN ELLO**/
     var idProducto = $(this).attr("idProducto");
     $("button.recuperarBoton[idagregar='" + idProducto + "']").removeClass("btn-default");
     $("button.recuperarBoton[idagregar='" + idProducto + "']").addClass("btn-success agregarProducto");
 
+    /**SE REALIZA UN DELETE DEL ID QUE FUE REMOVIDO PARA QUE EN LA SIGUIENTE BUSQUEDA PUEDA MOSTRARSE COMO ACTIVO**/
     $.each(a, function(i, item) {
         if (a[i].idProducto == idProducto) {
             delete a[i].idProducto;
@@ -127,6 +135,7 @@ $(".product-venta").on("click", ".quitarProducto", function() {
 
     });
 
+    /**SI NO EXISTE HIJOS EL LA LISTA DE VENTAS HACEMOS UN LIMPIA DE LAS VIARIABLES TOTAL,SUB-TOTAL ETC...**/
     if ($(".product-venta").children().length == 0) {
 
         $(".sub-total").val(0);
@@ -148,6 +157,7 @@ $(".product-venta").on("click", ".quitarProducto", function() {
 
 });
 
+/**EVENTO ENCARGADO DE REALIZAR LA SUMA DE CANTIDAD DE PRODUCTOS Y LA SUMA TOTAL DE SUS PRECIO COMO TAMBIEN EL IVA ETC...**/
 $(".product-venta").on("change", "input.nuevaCantidadProducto", function() {
     var precio = $(this).parent().parent().children('.precio-producto').children('.precio');
     var precionuevo = $(this).parent().parent().children('.precio-total').children('.precioFin');
@@ -162,24 +172,31 @@ $(".product-venta").on("change", "input.nuevaCantidadProducto", function() {
     sumarCount();
 });
 
+/**FUNCION ENCARGADA DE REALIZAR LA SUMA DE PORDUCTOS QUE HAY EL LISTA DE VENTAS**/
 function sumarCount() {
+    /**TRAER LA CLASE QUE CONTIENE N CANTIDAD DE PRODUCTOS **/
     var cantidad = $(".nuevaCantidadProducto");
+    /**ARRAY QUE FUNCIONA COMO ACUMULADOR DE CANTIDADES**/
     var arrayCount = [];
 
+    /**REALIZAMOS UN PUSH AL ARREGLO DE CANTIDADES**/
     for (var i = 0; i < cantidad.length; i++) {
         arrayCount.push(Number($(cantidad[i]).val()));
     }
 
+    /**FUNCION PARA IR SUMANDO LAS CANTIDADES**/
     function sumarArrayCount(tot, num) {
 
         return tot + num;
 
     }
 
+    /**DECLARAMOS UNA VARAIBLE QUE CONTENDRA LA SUMA DE LAS CANTIDADES DE LOS PRODUCTOS**/
     var Sumacantidad = arrayCount.reduce(sumarArrayCount);
 
+    /**LE DAMOS VALOR AL INPUT CON LA CLASE COUNT**/
     $(".count").val(Sumacantidad);
-    console.log(Sumacantidad);
+    //console.log(Sumacantidad);
 }
 
 function sumarTotal() {
@@ -207,24 +224,65 @@ function sumarTotal() {
 
 }
 
+/** **/
 $(".modal-footer").on("click", "button.enviar-contra", function() {
 
+    var contrasena = $("input#contra_admin").val();
+    var usuario = $("input#usuario_admin").val();
 
-    var idProducto = $(".quitarProducto").attr("idProducto");
-    console.log(idProducto, "id");
-    /*$.each(a, function(i, item) {
-        $("button.agregarProducto[idAgregar='" + a[i].idProducto + "']").removeClass("btn-default");
-        $("button.agregarProducto[idAgregar='" + a[i].idProducto + "']").addClass("btn-success agregarProducto");
-    });*/
+    var datos = new FormData();
+    datos.append("contrasena", contrasena);
+    datos.append("usuario", usuario);
 
-    $.each(a, function(i, item) {
-        if (a[i].idProducto == idProducto) {
-            delete a[i].idProducto;
+    $.ajax({
+
+        url: "ajax/productos.ajax.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function(respuesta) {
+            if (respuesta == 'si') {
+
+
+
+                /** BUSCA PRODUCTOS DE LA LISTA PARA REMOVER LA CLASE DEFAULT Y AGREGAR LA CLASE agregarProducto(PUDE SELECCIONAR Y AGREGARLO EN LA LISTA) **/
+                $.each(a, function(i, item) {
+                    $("button.recuperarBoton[idAgregar='" + a[i].idProducto + "']").removeClass("btn-default");
+                    $("button.recuperarBoton[idAgregar='" + a[i].idProducto + "']").addClass("btn-success agregarProducto");
+
+                });
+
+                /**LIMPIAMOS EL ARREGLO**/
+                a.length = 0;
+
+
+                /** LIMPIA LA LISTA DE PRODUCTOS, DEJANDO LOS VALORES DE TOTAL,COUNT,SUB-TOTAL,IVA EN 0 **/
+                $(".product-venta").empty();
+                if ($(".product-venta").children().length == 0) {
+                    $(".sub-total").val(0);
+                    $(".total-iva").val(0);
+                    $(".count").val(0);
+                    $(".total").val(0);
+                    /** SI NO EXISTE PRODUCTOS EN LISTA DE VENTAS, QUITAMOS LA CLASE VENTA-MODAL QUE ABRE EL FORMULARIO PARA PAGAR y EL FORMULARIO DE CANCELAR**/
+                    $("button.venta").attr("data-target", "");
+                    $("button.cancelar").attr("data-target", "");
+                    $("input#contra_admin").val("");
+                    $("input#usuario_admin").val("");
+                }
+
+
+            } else {
+                alert("El usuario o la contraseña son incorrectas");
+                $("input#contra_admin").val("");
+                $("input#usuario_admin").val("");
+            }
+
+
         }
-
     });
 
-    //sumarTotal();
-    //sumarCount();
-    $(".product-venta").empty();
+
 });

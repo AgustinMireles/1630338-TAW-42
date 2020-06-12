@@ -138,7 +138,8 @@ $ventas = new MvcController();
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <input type="text" id="usuario_admin" class="form-control form-control-sm mb-2" placeholder="usuario">
+        <input type="password" id="contra_admin" class="form-control form-control-sm" placeholder="contraseña">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary enviar-contra" data-dismiss="modal">Enviar</button>

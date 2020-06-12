@@ -1,11 +1,17 @@
 <?php 
 
+    /*Crear los controladores que utilizara el usuario minetras 
+    navega en el sitio */
     class MvcController{
 
+
+        /*Metodo/funcion para devolver la estructura del sistema*/
         public function plantilla(){
             include "vistas/template.php";
         }
 
+        /*Metodo/funcion para mostrarle al usuario la pantalla
+         correspondiente a la accion que ha seleccionado*/
         public function enlacesPaginasController(){
             if(isset($_GET['action'])){
                 $enlacesController = $_GET['action'];
@@ -16,13 +22,19 @@
             include $respuesta;
         }
 
+
+        //CONTROLADORES PARA LOS USUARIOS //
+    /*--Este controller apartir de la funcion password verify compara por hasta la
+      contrseña ingresada con la que estaen la base de datos si es correcta
+      guarda el arreglo session los datos delusuario y manda al inventario
+       o marca mensaje de error*/
         public function ingresaUsuarioController(){
             
             if(isset($_POST["txtUser"]) && isset($_POST["txtPassword"])){
                 $datosController = array("user"=>$_POST["txtUser"],"password"=>$_POST["txtPassword"]);
                 $respuesta = Datos::ingresoUsuarioModel($datosController,"usuarios");
                 $has= $respuesta["contrasena"];
-                echo $has;
+                //echo $has;
                 if($respuesta["usuario"] == $_POST["txtUser"] && password_verify($_POST["txtPassword"],$has))
                 {
                     session_start();
@@ -38,6 +50,8 @@
             }
         }
 
+        /*Controlador para cargar todos los datos de los usuarios, la contraseña
+     No se puede cargar debido a que independientemente de si se muestra o no, esta encriptado */
         public function vistaUserController(){
             $respuesta = Datos::vistaUsersModel("usuarios");
                 foreach ($respuesta as $row => $item){
@@ -64,7 +78,7 @@
                 }
             }
         
-
+            //se encarga de registrar el formulario
         public function registrarUserController(){
             ?>
             <div class="col-md-6 mt-3">
@@ -113,6 +127,7 @@
         
 
 
+         /** INSERTA LOS DATOS DEL NUEVO USUARIO CREADO A LA BASE DE DATOS CON CONTRASEÑA ENCRIPTADA**/                   
          public function insertarUserController(){
              if(isset($_POST["nusuariotxt"])){
 
@@ -154,7 +169,13 @@
          }      
          
          
-
+         
+    /*-- Este controlador se encarga de mostrar el formulario al usuario para editar sus datos,
+     la contraseña no se carga debido a que como esta encriptada, no es optimo mostrarle al usuario 
+     su contraseña como una cadena de caracteres y se deja en blanco, pero se verifica al momento de
+      hacer una modifica que haya ingresado una contraseña, si no es el caso entonces no se podrá 
+      ejecutar la modificación y cada que se quiera hacer una modificación a un determinado usuario, 
+      se deberá ingresar tambien una nueva contraseña --*/
          public function editarUserController(){
 
             $datosController = $_GET["idUserEditar"];
@@ -300,6 +321,9 @@
                 }
          }
 
+         // CONTROLADORES PARA EL TABLERO //
+    /*-- Este controlador sirve para mostrarle al usuario las cajas donde se tiene información sobre los usuarios, productos y ventas registradas, así como los movimientos que se tienen en el historial (altas/bajas de productos) y las ganancias que se tienen de acuerdo a todas las ventas --*/
+
          public function contarFilas(){
              $respuesta_users = Datos::contarFilasModel("usuarios");
              echo '
@@ -317,7 +341,10 @@
               ';
                      }
 
-                     
+         
+        //CONTROLADORES DE PRODUCTOS//
+    /*Este controlador permite mostrar apartir de un foreach y un modelo una tabla donde se muestran los productos
+    que contiene la tabla productos */             
         public function vistaProductsController(){
             $respuesta = Datos::vistaProductsModel("productos");
             foreach ($respuesta as $row => $item){
@@ -356,7 +383,8 @@
             }
         }
 
-
+        /*Esta funcion permite llamar al formulario que mandara a traves del metodo POST, controllador y modelo
+    insertara dicho producto */
         public function registrarProductController(){
             ?>
             <div class="col-md-6 mt-3">
@@ -412,6 +440,13 @@
             <?php //se abre el php
         }
 
+         /*Esta funcion permite insertar productos llamando al modelo que se encuentra en el archivo crud de modelos
+    confirma con un isset que la caja de texto del codigo este llena y procede a llenar enuna variable llamada datos controller
+    este arreglo se manda como paramentro al igual que el nombre de la tabla, una vez se obtiene  una respuesta
+    de la funcion del modelo de insercion tenemos que checar si la respuesta fue afirmativa hubo un error y mostrara
+    las respectivas alertas, para insertar los datos en la tabla de historial  se tiene que mandar a un modelo llamado
+    ultimoproductmodel este traera el ultimo dato insertado que es el id del producto que se manda en el array
+    de datoscontroller2 junto alnombre de la tabla asi insertando los datos en la tabla historial*/
         public function insertarProductController(){
             if(isset($_POST["codigotxt"])){
                 $datosController = array("codigo"=>$_POST["codigotxt"],"precio"=>$_POST["preciotxt"],"stock"=>$_POST["stocktxt"],
@@ -783,6 +818,7 @@ public function vistaHistorialController()
     }
 }
 
+/**MUESTRA LAS CATEGORIAS EXISTENTES**/
 public function vistaCategoriesController(){
     $respuesta = Datos::vistaCategoriesModel("categorias");
     foreach ($respuesta as $key => $item) {
@@ -804,7 +840,7 @@ public function vistaCategoriesController(){
                 ';
     }
 }
-
+/**MUESTRA EL FOMRULARIO PARA REGITRAR UNA NUEVA CATEGORIA**/
 public function registrarCategoryController(){
     ?>
     <div class="col-md-6 mt-3">
@@ -836,7 +872,7 @@ public function registrarCategoryController(){
    <?php 
 }
 
-
+/**INSERTA NUEVA CATEGORIA CREADA A LA BASE DE DATOS**/
 public function insertarCategoryController(){
     if(isset($_POST["ncategoriatxt"]) && isset($_POST["dcategoriatxt"])){
         $datosController = array("nombre_categoria"=>$_POST["ncategoriatxt"],
@@ -873,7 +909,7 @@ public function insertarCategoryController(){
     }
 }
 
-
+/**MUESTRA EL FORMULARIO CON LOS DATOS DE LA CATEGORIA SELECCIONADAD PARA PROCEDER A EDITAR**/
 public function editarCategoryController(){
     $datosController = $_GET["idCategoryEditar"];
     $respuesta = Datos::editarCategoryModel($datosController,"categorias");
@@ -914,6 +950,7 @@ public function editarCategoryController(){
     <?php
 }
             
+/**ACTUALIZA UNA CATEGORIA SELECIONADA**/
 public function actualizarCategoryController(){
     if(isset($_POST["ncategoriatxteditar"]) && isset($_POST["dcategoriatxteditar"])){
         $datosController= array("id"=>$_POST["idCategoryEditar"], "nombre_categoria" =>$_POST["ncategoriatxteditar"],
@@ -950,6 +987,7 @@ public function actualizarCategoryController(){
     }
 }
 
+/**ELIMINAR UNA CATEGORIA SELECCIONADA**/
 public function eliminarCategoryController(){
     if(isset($_GET["idCategoryBorrar"])){
         $datosController = $_GET["idCategoryBorrar"];
@@ -987,17 +1025,30 @@ public function eliminarCategoryController(){
 }
 
 
+    /**BUSCA PRODUCTOS A PARTIR DE UN PARAMETRO**/
     public function buscarProductosController($buscar){
             $respuesta = Datos::buscarProductosModel($buscar,"productos");
             return $respuesta;    
       
     }
   
+    /** RETORNA LOS PRODUCTOS, PARA SER MOSTRADOS EN LA VISTA VENTAS**/
     public function mostrarProductoController($valor){
             $respuesta = Datos::mostrarProductoModel("productos",$valor);
             return $respuesta;
         }
 
+    /** VALIDA UN USER NAME Y PASSWORD DE UN USUARIO PARA CANELAR LA VENTA **/    
+    public function validarContraController($valor,$valor2){
+            $respuesta = Datos::validarContraModel("usuarios",$valor2);
+            $has = $respuesta["contrasena"];
+            //echo $respuesta["usuario"]." / ".$valor2;
+            if($respuesta["usuario"] == $valor2 && password_verify($valor,$has)){
+                return "si";
+            } else {
+                return "no";
+            }
+    }    
     
 }
 ?>

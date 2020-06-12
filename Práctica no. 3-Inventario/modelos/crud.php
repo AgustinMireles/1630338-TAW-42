@@ -3,7 +3,8 @@
     include "conexion.php";
 
     class Datos extends Conexion{
-
+        // MODELOS PARA LOS USUARIOS //
+        /* Modelo para el inicio de sesión de los usuarios */
         public function ingresoUsuarioModel($datosModel,$tabla){
             $stmt = Conexion::conectar()->prepare("SELECT CONCAT(firstname,' ',lastname) AS nombre_usuario,
             user_name AS usuario, user_password AS contrasena, user_id AS id FROM $tabla WHERE user_name = 
@@ -14,6 +15,7 @@
             $stmt->close();
         }
 
+        /* Este modelo sirve para mostrar toda la información de los usuarios que existen */
         public function vistaUsersModel($tabla){
             $stmt = Conexion::conectar()->prepare("SELECT user_id AS 'id', firstname, lastname, user_name,
             user_password, user_email, date_added FROM $tabla");
@@ -22,6 +24,7 @@
             $stmt->close();
         }
 
+        /* Este modelo sirve para insertar un nuevo usuario a la bd */
         public function insertarUserModel($datosModel,$tabla){
             $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (firstname,lastname,user_name,user_password,
             user_email) VALUES (:nusuario,:ausuario,:usuario,:contra,:email)");
@@ -50,6 +53,7 @@
             $stmt->close();
         }
 
+        /* Este modelo sirve para guardar los cambios hechos a un usuarios en particular */
         public function actualizarUserModel($datosModel,$tabla){
             $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET firstname = :nusuario, lastname = :ausuario, 
             user_name = :usuario, user_password = :contra, user_email = :email WHERE user_id = :id");
@@ -69,6 +73,7 @@
             $stmt->close();
         }
 
+        /* Este modelo sirve para eliminar a un usuario de la base de datos */
         public function eliminarUserModel($datosModel,$tabla){
             $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE user_id = :id");
             $stmt->bindParam(":id",$datosModel,PDO::PARAM_INT);
@@ -80,6 +85,9 @@
             $stmt->close();
         }
 
+         //MODELO Para el Tablero //
+        /* Este modelo permite conocer el numero de filas  en determinada tabla, se utiliza para mostrar informacion
+        en el tablero */
         public function contarFilasModel($tabla) {
             $stmt = Conexion::conectar()->prepare("SELECT COUNT(*) AS 'filas' FROM $tabla");
             $stmt->execute();
@@ -88,6 +96,9 @@
         }
         
 
+        ////////////MODELOS PARA LOS PRODUCTOS//////////////
+        /*Este modelo trae los datos que se muestran en la tabla de la vista que se imprimen en el controlador de vista
+        de productos */
         public function vistaProductsModel($tabla){
             $stmt = Conexion::conectar()->prepare("SELECT p.id_product AS 'id', p.code_product AS 'codigo', 
             p.name_product AS 'producto', p.date_added AS 'fecha', p.price_product AS 'precio', p.stock AS 'stock',
@@ -99,6 +110,8 @@
 
                   }
 
+        /*Este modelo permite insertar en la tabla productos apartir  de los datos traidos en el array y la tabla por pdo
+       se dan los valores y se genera la inserccion */          
         public function insertarProductsModel($datosModel,$tabla){
             $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (code_product, name_product, price_product,
             stock,id_category) VALUES(:codigo,:nombre,:precio,:stock,:categoria)");
@@ -116,6 +129,8 @@
             $stmt->close();
         }          
         
+        /*Este Modelo trae los datos que se necesitan editar en el formulario de edicion de productos apartir del id del }
+        producto enviado por parametro */
         public function editarProductsModel($datosModel, $tabla){
             $stmt = Conexion::conectar()->prepare("SELECT id_product AS 'id', code_product AS 'codigo',
             name_product AS 'nombre', price_product AS 'precio', stock FROM $tabla WHERE id_product = :id");
@@ -125,6 +140,8 @@
             $stmt->close();
         }
 
+        /*Esto permite actualizar la tabla producto recibiendo solamente el stock y el id esta sentencia agrega 
+        stock */
         public function pushProductsModel($datosModel,$tabla){
             $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET stock = stock + :stock WHERE id_product = :id");
             $stmt->bindParam(":stock",$datosModel["stock"],PDO::PARAM_INT);
@@ -137,6 +154,8 @@
             $stmt->close();
         }
 
+        /*Esto permite actualizar la tabla producto recibiendo solamente el stock y el id esta sentencia Quita 
+        stock */
         public function pullProductsModel($datosModel,$tabla){
             $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET stock = stock - :stock WHERE id_product =
             :id AND stock >= :stock");
@@ -232,7 +251,7 @@
 
 
 
-
+        ////////MODELOS CATEGORIAS////////
         public function vistaCategoriesModel($tabla){
             $stmt = Conexion::conectar()->prepare("SELECT id_category AS 'idc', name_category AS 'ncategoria',
             description_category AS 'dcategoria', date_added AS 'fcategoria' FROM $tabla");
@@ -329,6 +348,17 @@
 		   $stmt -> execute();
 
            return $stmt -> fetch();
+           }
+           
+           public function validarContraModel($tabla,$valor2){
+            $stmt = Conexion::conectar()->prepare("SELECT CONCAT(firstname,' ',lastname) AS nombre_usuario,
+            user_name AS usuario, user_password AS contrasena, user_id AS id FROM $tabla WHERE user_name = 
+            :usuario");
+            $stmt->bindParam(":usuario",$valor2,PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch();
+            $stmt->close();
+            
            }
 
     }
