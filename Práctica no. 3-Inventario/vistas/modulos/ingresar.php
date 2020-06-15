@@ -1,4 +1,4 @@
-<div class="login-box">
+<div class="login-box container">
     <div class="login-logo">
         <a href="index.php"><b>Sistema de </b>Inventarios</a>
     </div>
