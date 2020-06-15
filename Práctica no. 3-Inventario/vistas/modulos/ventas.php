@@ -105,7 +105,7 @@ echo '<option value="'.$item["id"].'">'.$item["nombre"].'</option>';
 </div><!--FIN BOX-BODY-->
 
 </div>
-<div class="meta-row col-sm-12 col-xs-12 col-lg-6 col-md-6 mt-lg-0 mt-sm-4">
+<div class="meta-row col-sm-12 col-xs-12 col-lg-6 col-md-6 mt-lg-0 mt-md-0 mt-sm-4">
 <div class="card-header bg-gray">
                 <h3 class="card-title">Buscar Productos</h3>
 
