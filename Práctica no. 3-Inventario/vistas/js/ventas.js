@@ -250,10 +250,11 @@ $(".totales").on("change", ".descuento", function() {
         sumarTotal();
     }
 
-    console.log(total);
+    //console.log(total);
 });
 
-/** **/
+/**EVENTO ENCARGADO DE VALIDAR CONTRASEÑA PARA CANCELAR LA VENTA
+ * SOLO USUARIOS CON TIPO DE USUARIO ADMIN PUEDEN REALIZAR ESTA ACCION DE LO CONTRARIO NO PODRAN CANCELAR LA VENTA**/
 $(".modal-footer").on("click", "button.enviar-contra", function() {
 
     var contrasena = $("input#contra_admin").val();
@@ -327,53 +328,36 @@ $(".efectivo").on("change", function() {
     $(".cambio").val(pago - total);
 })
 
-/**EVENTO PARA REALIZAR LA VENTA**/
+/**EVENTO PARA REALIZAR LA VENTA
+ * DENTRO DEL MODAL SE TIENE UN FORMULARIO CON INPUTS OCULTOS, CUANDO EL USUARIO LE DE CLICK A PAGAR RESIVIRA ESOS VALORES**/
 $(".botones").on("click", "button.realizarventa", function() {
-    console.log("hola");
+    //console.log("hola");
+    /**ARREGLO PARA GUARDAR LA LISTA DE PRODUCTOS**/
     var listaProductos = [];
-    var datos = new FormData();
+
+    /**LE ASIGNAMOS COMO VALOR  EL CLIENTE QUE ESTE SELECIONADO AL INPUT CON EL id_cliente**/
     var idCliente = $("#cliente").val();
     $("#id_cliente").val(idCliente);
+
+    /**LE ASIGNAMOS COMO VALOR TOTAL AL INPUT CON EL id total**/
     var total = $(".total").val();
     $("#total_venta").val(total);
+
+    /**LE ASIGNAMOS COMO VALOR COUNT AL INPUT CON EL id cantidad_productos**/
     var count = $(".count").val();
     $("#cantidad_productos").val(count);
 
+
+    /**REALIZAMOS UN PUSH AL ARREGLO QUE CONTIENE LA INFORMACION DE LOS PRODUCTOS Y SE LE ASIGNA EL VALOR AL INPUT con el id id_productos**/
     var idProducto = $(".quitarProducto");
     var cantidad = $(".nuevaCantidadProducto");
     var nombre = $(".nombre");
     for (var i = 0; i < cantidad.length; i++) {
         listaProductos.push({
-                "id": $(idProducto[i]).attr("idProducto"),
-                "stock": $(cantidad[i]).val(),
-                "nombre": $(nombre[i]).val()
-            })
-            // datos.append("ids", $(idProducto[i]).attr("idProducto"));
-            // datos.append("cantidades", $(cantidad[i]).val());
+            "id": $(idProducto[i]).attr("idProducto"),
+            "stock": $(cantidad[i]).val(),
+            "nombre": $(nombre[i]).val()
+        })
     }
     $("#id_productos").val(JSON.stringify(listaProductos));
-    //console.log(a);
-    /*datos.append("total", total);
-    datos.append("count", count);
-    datos.append("idCliente", idCliente);*/
-
-    /**HACER PETICION AJAX PARA BUSCAR EL PRODUCTO CON EL ID SELECIONADO EN LA LISTA DE PRODUCTOS*/
-    /* $.ajax({
-
-         url: "ajax/productos.ajax.php",
-         method: "POST",
-         data: datos,
-         cache: false,
-         contentType: false,
-         processData: false,
-         dataType: "json",
-         success: function(respuesta) {
-             //console.log(respuesta);
-         }
-
-
-
-     }) /**FIN PETICION AJAX*/
-
-
 });

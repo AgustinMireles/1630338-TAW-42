@@ -105,7 +105,7 @@ echo '<option value="'.$item["id"].'">'.$item["nombre"].'</option>';
 </div><!--FIN BOX-BODY-->
 
 </div>
-<div class="meta-row col-sm-12 col-xs-12 col-lg-6 col-md-6 mt-lg-0 mt-md-0 mt-sm-4">
+<div class="meta-row col-sm-12 col-xs-12 col-lg-6 col-md-6 mt-lg-0 mt-sm-4">
 <div class="card-header bg-gray">
                 <h3 class="card-title">Buscar Productos</h3>
 
@@ -145,7 +145,7 @@ $ventas = new MvcController();
 <div class="modal fade" id="modal-venta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header container">
         <h5 class="modal-title" id="exampleModalLabel">Realizar Venta</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -176,7 +176,7 @@ $ventas = new MvcController();
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModal">CONTRASEÑA</h5>
+        <h5 class="modal-title" id="exampleModal">CANCELAR VENTA (SOLO ADMINISTRADORES)</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -197,86 +197,3 @@ $ventas = new MvcController();
 
 
 
-
-
-
-
-
-
-
-
-<script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
-
-
-
-<style type="text/css">
-.slick-item {
-    padding:0px 20px;
-    font-size:20px;
-    line-height:40px;
-    border-right:solid 1px #EEE;
-    margin-right:-1px;
-}
-.expandable {
-	width: 19%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    transition-property: width;
-	transition-duration: 2s;
-}
-.item-grid-title {
-	width: 19%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    transition-property: width;
-	transition-duration: 2s;
-}
-.item-grid-price {
-	width: 19%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    transition-property: width;
-	transition-duration: 2s;
-}
-.expandable:hover{
-	overflow: visible;
-    white-space: normal;
-    width: auto;
-}
-.shop-items:hover {
-	background:#FFF;
-	cursor:pointer;
-	box-shadow:inset 5px 5px 100px #EEE;
-}
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none;   /* Chrome/Safari/Opera */
-  -khtml-user-select: none;    /* Konqueror */
-  -moz-user-select: none;      /* Firefox */
-  -ms-user-select: none;       /* Internet Explorer/Edge */
-  user-select: none;           /* Non-prefixed version, currently
-                                  not supported by any browser */
-}
-.img-responsive {
-    margin: 0 auto;
-}
-.modal-dialog {
-	margin: 10px auto !important;
-}
-
-/**
- NexoPOS 2.7.1
-**/
-
-#cart-table-body .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
-    border-bottom: 1px solid #f4f4f4;
-	margin-bottom:-1px;
-}
-.box {
-	border-top: 0px solid #d2d6de;
-}
-</style>
-</div>

@@ -1,9 +1,13 @@
 <?php 
+/**REQUERIMOS DE LOS CONTROLADORES PARA ENVIARLES LOS DATOS Y MODELOS PARA RECIBIRLOS**/
 require_once "../controladores/controlador.php";
 require_once "../modelos/crud.php";
 
+
+/** NOMBRAMOS A LA CLASE**/
 class AjaxProductos{
 
+/**FUNCION PARA MOSTRAR PRODUCTOS**/   
 public $idProducto;
 
 public function verProducto(){
@@ -18,6 +22,7 @@ public function verProducto(){
 
   }
 
+  /** FUNCION PARA BUSCADOR**/
 public $buscar; 
 public function buscarProductos(){
 
@@ -29,6 +34,7 @@ public function buscarProductos(){
 
 }
 
+/**FUNCION PARA VALIDAR CREDENCIALES, PARA CANCELAR LA VENTA**/
 public $contrasena; 
 public $usuario;
 public function validarContra(){
@@ -46,7 +52,7 @@ public function validarContra(){
 
 
 
-
+/**SI ESTA POSTEADO idProducto HACEMOS USO DE LA FUNCION verProductos**/
 if(isset($_POST["idProducto"])){
 
    $Producto = new AjaxProductos();
@@ -55,7 +61,7 @@ if(isset($_POST["idProducto"])){
 
 }
 
-
+/**SI ESTA POSTEADO buscar HACEMOS USO DE LA FUNCION buscarProductos**/
 if(isset($_POST["buscar"])){
 
    $Productobuscar = new AjaxProductos();
@@ -64,6 +70,7 @@ if(isset($_POST["buscar"])){
 
 }
 
+/**SI ESTA POSTEADO usuario HACEMOS USO DE LA FUNCION validarContra**/
 if(isset($_POST["usuario"])){
 
    $Productobuscar = new AjaxProductos();
@@ -74,11 +81,12 @@ if(isset($_POST["usuario"])){
 
 }
 
+/*
 if(isset($_POST["idCliente"])){
    //$arr = json_decode($_POST['ids']);
 
    var_dump(json_encode($_POST["ids"], true));
    //var_dump ($_POST["ids"]);
-}
+}*/
 
 ?>
