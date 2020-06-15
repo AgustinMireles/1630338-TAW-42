@@ -117,6 +117,13 @@
                                 <input class="form-control" type="text" name="uemailtxt" id="uemailtxt"
                                 placeholder="Ingrese Correo" required>
                             </div>
+
+                            <div class="form-group">
+                               <select name="tipotxt" class="form-control" id="" required>
+                                    <option value="1" >admin</option>
+                                    <option value="2" >comun</option>
+                               </select>
+                            </div>
                             <button class="btn btn-primary" type="submit">Agregar</button>
                         </form>
                         </div>
@@ -134,20 +141,21 @@
                 $_POST["ucontratxt"] = password_hash($_POST["ucontratxt"],PASSWORD_DEFAULT);
 
                 $datosController = array ("nusuario"=>$_POST["nusuariotxt"],"ausuario"=>$_POST["ausuariotxt"],
-                "usuario"=>$_POST["usuariotxt"],"contra"=>$_POST["ucontratxt"],"email"=>$_POST["uemailtxt"]);
+                "usuario"=>$_POST["usuariotxt"],"contra"=>$_POST["ucontratxt"],"email"=>$_POST["uemailtxt"],
+                "tipo"=>$_POST["tipotxt"]);
 
                 $respuesta = Datos::insertarUserModel($datosController,"usuarios");
                 
                 if($respuesta == "success"){
                     echo '
-                        <div class="col-md-6 mt-3
+                        <div class="col-md-6 mt-3">
                             <div class="alert alert-success alert-dismissible">
                                 <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x</button>
                                 <h5>
                                 <i class="icon fas fa-check"></i>
                                 !Exito
                                 </h5>
-                                Usuario agergaado con éxito,
+                                Usuario agregado con éxito,
                             </div>
                         </div>                        
                     ';
@@ -227,6 +235,13 @@
                             id="uemailtxtEditar" placeholder="Ingrese el nuevo correo electrónico"
                             value="<?php echo $respuesta["email"];?>" required>
                         </div> 
+
+                        <div class="form-group">
+                        <select name="tipotxtEditar" class="form-control" id="" required>
+                                    <option value="1" >admin</option>
+                                    <option value="2" >comun</option>
+                               </select>
+                        </div> 
                         <button class="btn btn-primary" type="submit">Editar</button>
                        </form>
                        </div>   
@@ -245,7 +260,7 @@
 
                  $datosController = array("id"=>$_POST["idUserEditar"],"nusuario"=>$_POST["nusuariotxtEditar"],
                  "ausuario"=>$_POST["ausuariotxtEditar"],"usuario"=>$_POST["usuariotxt"],"contra"=>$_POST["contratxtEditar"],
-                 "email"=>$_POST["uemailtxtEditar"]);
+                 "email"=>$_POST["uemailtxtEditar"],"tipo"=>$_POST["tipotxtEditar"]);
 
                  $respuesta = Datos::actualizarUserModel($datosController,"usuarios");
                  if($respuesta == "success"){
@@ -326,18 +341,60 @@
 
          public function contarFilas(){
              $respuesta_users = Datos::contarFilasModel("usuarios");
+             $respuesta_products = Datos::contarFilasModel("productos");
+             $respuesta_categories = Datos::contarFilasModel("categorias");
+             $respuesta_historial = Datos::contarFilasModel("ventas");
              echo '
-                             <div class="col-lg-3 col-6">
-                                 <div class="small-box bg-info">
+                         
+             <div class="col-lg-3 col-6">
+             <div class="small-box bg-info">
+                 <div class="inner">
+                     <h3>' . $respuesta_users["filas"] . '</h3>
+                     <p>Total de Usuarios</p>
+                 </div>
+                 <div class="icon">
+                     <i class="far fa-address-card"></i>
+                 </div>
+                 <a class="small-box-footer" href="index.php?action=usuarios">Más <i class="fas fa-arrow-circle-right"></i></a>
+             </div>
+             </div>
+             <div class="col-lg-3 col-6">
+                                 <div class="small-box bg-teal">
                                      <div class="inner">
-                                         <h3>'.$respuesta_users["filas"].'</h3>
-                                         <p>Total de Usuarios</p>
+                                         <h3>' . $respuesta_products["filas"] . '</h3>
+                                         <p>Total de Productos</p>
                                      </div>
                                      <div class="icon">
-                                         <i class="far fa-address-card"></i>
+                                         <i class="fas fa-box"></i>
                                      </div>
-                                     <a class="small-box-footer" href="index.php?action=usuarios">Más <i class="fas fa-arrow-circle-right"></i></a>
+                                     <a class="small-box-footer" href="index.php?action=inventario">Más <i class="fas fa-arrow-circle-right"></i></a>
                                  </div>
+                             </div>
+             
+             <div class="col-lg-3 col-6">
+                                 <div class="small-box bg-olive">
+                                     <div class="inner">
+                                         <h3>' . $respuesta_categories["filas"] . '</h3>
+                                         <p>Total de Categorías</p>
+                                     </div>
+                                     <div class="icon">
+                                     <i class="fas fa-tag"></i>
+                                     </div>
+                                     <a class="small-box-footer" href="index.php?action=categorias">Más <i class="fas fa-arrow-circle-right"></i></a>
+                                 </div>
+                             </div>
+             <div class="col-lg-3 col-6">
+                                 <div class="small-box bg-gray">
+                                     <div class="inner">
+                                         <h3>' . $respuesta_historial["filas"] . '</h3>
+                                         <p>Total Ventas</p>
+                                     </div>
+                                     <div class="icon">
+                                        <i class="fas fa-dollar-sign"></i>
+                                     </div>
+                                     <a class="small-box-footer" href="index.php?action=historialventas">Más <i class="fas fa-arrow-circle-right"></i></a>
+                                 </div>
+                             </div>
               ';
                      }
 
@@ -1043,12 +1100,321 @@ public function eliminarCategoryController(){
             $respuesta = Datos::validarContraModel("usuarios",$valor2);
             $has = $respuesta["contrasena"];
             //echo $respuesta["usuario"]." / ".$valor2;
-            if($respuesta["usuario"] == $valor2 && password_verify($valor,$has)){
+            if($respuesta["tipo"] == "1" &&  $respuesta["usuario"] == $valor2 && password_verify($valor,$has)){
                 return "si";
             } else {
                 return "no";
             }
     }    
+
+    
+    public function vistaClientesController(){
+        $respuesta = Datos::vistaClientesModel("clientes");
+            foreach ($respuesta as $row => $item){
+                echo'
+                    <tr>
+                        <td>
+                            <a href="index.php?action=clientes&idClienteEditar='.$item["id"].'" class="btn
+                            btn-warning btn-sm btn-icon" title="Editar" data-toggle="tooltip"><i class="fa
+                            fa-edit"></i></a>
+                        </td>
+                        <td>
+                            <a href="index.php?action=clientes&idBorrar='.$item["id"].'" class="btn btn-danger
+                            btn-sm btn-icon" title="Eliminar" data-toggle="tooltip">
+                            <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                        <td>'.$item["nombre"].'</td>  
+                        <td>'.$item["rfc"].'</td> 
+                        <td>'.$item["date_added"].'</td> 
+                    </tr>
+                    ';
+            }
+        }
+
+        public function registrarClienteController(){
+            ?>
+            <div class="col-md-6 mt-3">
+                <div class="card card-primary">
+                    <div class="card-header">
+                    <h4><b>Registro </b>de Cliente</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="index.php?action=clientes">
+                            <div class="form-group">
+                                <label for="nclientetxt">Nombre: </label>
+                                <input class="form-control" type="text" name="nclientetxt" id="nclientetxt"
+                                placeholder="Ingrese el nombre" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rfctxt">RFC: </label>
+                                <input class="form-control" type="text" name="rfctxt" id="rfctxt"
+                                placeholder="Ingrese Apellidos" required>
+                            </div>
+
+                            <button class="btn btn-primary" type="submit">Agregar</button>
+                        </form>
+                        </div>
+                        </div>
+                        </div>
+                        <?php
+                            } 
+
+    public function insertarClienteController(){
+        if(isset($_POST["nclientetxt"])){
+                   
+                   
+                                   $datosController = array ("nombre"=>$_POST["nclientetxt"],"rfc"=>$_POST["rfctxt"]);
+                   
+                                   $respuesta = Datos::insertarClienteModel($datosController,"clientes");
+                                   
+                                   if($respuesta == "success"){
+                                       echo '
+                                           <div class="col-md-6 mt-3">
+                                               <div class="alert alert-success alert-dismissible">
+                                                   <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x</button>
+                                                   <h5>
+                                                   <i class="icon fas fa-check"></i>
+                                                   !Exito
+                                                   </h5>
+                                                   Cliente agregado con éxito,
+                                               </div>
+                                           </div>                        
+                                       ';
+                                   } else{
+                                       echo '
+                                       <div class="col-md-6 mt-3
+                                           <div class=" alert alert-danger alert-dismissible">
+                                               <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x</button>
+                                               <h5>
+                                               <i class="icon fas fa-ban"></i>
+                                               !Error
+                                               </h5>
+                                               Se ha producido un error al momento de agregar el cliente, trate de nuevo,
+                                           </div>
+                                       </div>                        
+                                   ';
+                                   }
+                }
+            }      
+            
+            
+            public function editarClienteController(){
+
+                $datosController = $_GET["idClienteEditar"];
+                $respuesta = Datos::editarClienteModel($datosController,"clientes");
+    
+                 ?>
+                 <div class="col-md-6 mt-3">
+                    <div class="card card-warning">
+                        <div class="card-header">
+                        
+                            <h4><b>Editor</b> de Clientes</h4>
+                            </div>
+                         <div class="card-body">
+                            <form method="post" action="index.php?action=clientes">
+    
+                            <div class="form-group">
+                                    
+                                <input type="hidden" name="idClienteEditar" class="form-control" value="<?php 
+                                echo $respuesta["id"]; ?>" required>
+                                </div>
+    
+                             <div class="form-group">
+                                <label for="nclientetxtEditar">Nombre: </label>
+                                <input class="form-control" type="text" name="nclientetxtEditar"
+                                id="nclientetxtEditar" placeholder="Ingrese el nuevo nombre" value="<?php echo
+                                $respuesta["nombre"]; ?>" required>
+                             </div>
+                            <div class="form-group">
+                                <label for="rfctxtEditar">RFC: </label>
+                                <input class="form-control" type="text" name="rfctxtEditar"
+                                id="rfctxtEditar" placeholder="Ingrese el nuevo RFC" value="<?php echo 
+                                $respuesta["rfc"]; ?>" required>
+                            </div> 
+                          
+                            
+                          
+                           <button class="btn btn-primary" type="submit">Editar</button>
+                           </form>
+                           </div>   
+                           </div>   
+                           </div>   
+             <?php
+             }      
+
+
+             public function actualizarClienteController(){
+                if(isset($_POST["nclientetxtEditar"])){
+
+                    $datosController = array("id"=>$_POST["idClienteEditar"],"nombre"=>$_POST["nclientetxtEditar"],
+                    "rfc"=>$_POST["rfctxtEditar"]);
+   
+                    $respuesta = Datos::actualizarClienteModel($datosController,"clientes");
+                    if($respuesta == "success"){
+                        echo'
+                           <div class="col-md-6 mt-3">
+                               <div class="alert alert-success alert-dismissible">
+                                   <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x
+                                   </button>
+                                   <h5>
+                                       <i class="icon fas fa-check"></i>
+                                       ¡Exito!
+                                   </h5>
+                                   Cliente editado con éxito.
+                                  </div>
+                                </div>
+                        ';
+                    }else{
+                       echo'
+                       <div class="col-md-6 mt-3">
+                           <div class="alert alert-danger alert-dismissible">
+                               <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x
+                               </button>
+                               <h5>
+                                   <i class="icon fas fa-ban"></i>
+                                   ¡Error!
+                               </h5>
+                               Se ha producido un error al editar.
+                              </div>
+                            </div>
+                    ';
+                    }
+                }
+            }
+
+            public function eliminarClienteController(){
+                if(isset($_GET["idBorrar"])){
+                    $datosController = $_GET["idBorrar"];
+                    $respuesta = Datos::eliminarClienteModel($datosController,"clientes");
+                   
+                    if ($respuesta == "success"){
+                        echo'
+                        <div class="col-md-6 mt-3">
+                        <div class="alert alert-success alert-dismissible">
+                            <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x
+                            </button>
+                            <h5>
+                                <i class="icon fas fa-check"></i>
+                                ¡Exito!
+                            </h5>
+                            Cliente eliminado con éxito.
+                           </div>
+                         </div>
+   
+                        ';
+                    } else {
+                       echo'
+                       <div class="col-md-6 mt-3">
+                           <div class="alert alert-danger alert-dismissible">
+                               <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x
+                               </button>
+                               <h5>
+                                   <i class="icon fas fa-ban"></i>
+                                   ¡Error!
+                               </h5>
+                               Se ha producido un error al eliminar.
+                              </div>
+                            </div>
+                    ';
+   
+                    }
+                   }
+            }
+
+            public function realizarVentaController(){
+                if(isset($_POST["cliente"])){
+                   
+                    $listaproductos = json_decode($_POST["productos"], true);
+                    //var_dump ($listaproductos);
+                    $nombreProductosComprados;
+
+                    foreach ($listaproductos as $key => $value) {
+                        $nombreProductosComprados = $value["nombre"] .",".  $nombreProductosComprados;
+                        $datosController = array("stock"=>$value["stock"],"id"=>$value["id"]);
+                        $productos = Datos::pullProductsModel($datosController,"productos");
+                    }    
+                    if($productos == "success"){
+                    
+                    $id_cliente = $_POST["cliente"];
+                    $total = $_POST["total"];
+                    $cantidad = $_POST["cantidad"];  
+                    $datosController2 = array("id_cliente"=>$id_cliente,"total_venta"=>$total,"total_productos"=>$cantidad,"productos"=>$nombreProductosComprados);
+                    $ventas = Datos::actualizarventasModel($datosController2,"ventas"); 
+                    if($ventas == "success"){
+                        header("Location:index.php?action=historialclientes");
+                    }
+                    }
+                }
+            }
+
+            public function vistaVentaController(){
+                $respuesta = Datos::vistaVentaModel("ventas");
+                    foreach ($respuesta as $row => $item){
+                        $cliente = Datos::editarClienteModel($item["cliente"],"clientes");
+                        echo'
+                            <tr>
+                
+                                <td>
+                                    <a href="index.php?action=historialventas&idBorrar='.$item["id"].'"
+                                    class = "btn btn-danger btn-sm btn-icon" title="Eliminar"
+                                    data-toggle="tooltip"><i class="fa fa-trash"></i></a>
+                                </td>  
+
+                                <td>$'.$item["total_venta"].'</td>
+                                <td>'.$item["total_productos"].'</td>
+                                <td>'.$item["productos"].'</td>
+                                <td>'.$item["fecha"].'</td>
+                                <td>'.$cliente["nombre"].'</td>
+                                
+
+                            </tr>
+                        ';
+                        }
+                
+                    }
+
+            public function eliminarVentaController(){
+                if(isset($_GET["idBorrar"])){
+                    $datosController = $_GET["idBorrar"];
+                    $respuesta = Datos::eliminarVentaModel($datosController,"ventas");
+                   
+                    if ($respuesta == "success"){
+                        echo'
+                        <div class="col-md-6 mt-3">
+                        <div class="alert alert-success alert-dismissible">
+                            <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x
+                            </button>
+                            <h5>
+                                <i class="icon fas fa-check"></i>
+                                ¡Exito!
+                            </h5>
+                            Venta eliminada con éxito.
+                           </div>
+                         </div>
+   
+                        ';
+                    } else {
+                       echo'
+                       <div class="col-md-6 mt-3">
+                           <div class="alert alert-danger alert-dismissible">
+                               <button class="close" type="button" data-dismiss="alert" aria-hidden="true">x
+                               </button>
+                               <h5>
+                                   <i class="icon fas fa-ban"></i>
+                                   ¡Error!
+                               </h5>
+                               Se ha producido un error al eliminar.
+                              </div>
+                            </div>
+                    ';
+   
+                    }
+                   }
+            }        
+                            
+        
     
 }
 ?>

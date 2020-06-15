@@ -74,4 +74,11 @@ if(isset($_POST["usuario"])){
 
 }
 
+if(isset($_POST["idCliente"])){
+   //$arr = json_decode($_POST['ids']);
+
+   var_dump(json_encode($_POST["ids"], true));
+   //var_dump ($_POST["ids"]);
+}
+
 ?>

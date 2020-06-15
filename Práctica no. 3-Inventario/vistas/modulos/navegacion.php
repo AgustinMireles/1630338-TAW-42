@@ -61,7 +61,7 @@
             <li class="nav-item">
                 <a href="index.php?action=categorias" class="nav-link">
                     <i class="nav-icon fas fa-tag"></i>
-                    <p>Categorias</p>
+                    <p>Categorías</p>
                 </a>
             </li>
 
@@ -75,7 +75,21 @@
             <li class="nav-item">
                 <a href="index.php?action=ventas" class="nav-link">
                     <i class="nav-icon fab fa-shopify"></i>
-                    <p>Ventas</p>
+                    <p>Venta</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="index.php?action=historialventas" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                    <p>Historial Ventas</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="index.php?action=clientes" class="nav-link">
+                <i class="nav-icon fas fa-user-tie"></i>
+                    <p>Clientes</p>
                 </a>
             </li>
 

@@ -1,18 +1,38 @@
-<div class="meta-row col-sm-12 col-xs-12 col-lg-6 col-md-6">
+<?php 
+  if(!isset($_SESSION['validar'])){
+    header("location:index.php?action=ingresar");
+    exit();
+}
 
-<select name="" id="" class="form-control">
-<option value="">si no </option>
-</select>    
-<button type="button" class="btn btn-default" ng-click="openAddQuickItem()" title="Item">
+$clientes = Datos::vistaClientesModel("clientes"); 
+?>
+
+<div class="meta-row col-sm-12 col-xs-12 col-lg-6 col-md-6">
+<div class="card-header bg-gradient-gray">
+                <h3 class="card-title">Ventas</h3>
+</div>
+
+<select name="" id="cliente" class="form-control">
+<?php
+foreach ($clientes as $row => $item){
+
+
+
+echo '<option value="'.$item["id"].'">'.$item["nombre"].'</option>';
+ 
+} 
+ ?> 
+</select>   
+<!--<button type="button" class="btn btn-default" ng-click="openAddQuickItem()" title="Item">
 <i class="fa fa-plus"></i>
 <span class="hidden-sm hidden-xs">Item</span>
-</button>
+</button>-->
 
 <div class="box-body">
 
         <div class="direct-chat-messages" id="cart-table-body" style="padding:0px;">
             <table class="table" style="margin-bottom:0;">
-            <thead><tr id="cart-table-notice"><td colspan="4">Please add an item</td></thead>
+            <thead><tr id="cart-table-notice"><td colspan="4">Listado de Artículos</td></thead>
             <tbody class="product-venta">
             
             
@@ -29,9 +49,9 @@
         <thead>
         <tr class="active">
         <td class="text-left" width="150">Nombre Producto</td>
-        <td class="text-center hidden-xs" width="120">Precio * Unidad</td>
+        <td class="text-center hidden-xs" width="150">Precio * Unidad</td>
         <td class="text-center" width="100">Cantidad</td>
-        <td class="text-right" width="100">Precio Total</td>
+        <td class="text-right" width="100">Total</td>
         </tr>
         </thead>
 
@@ -39,21 +59,33 @@
 
         <tr>
         
-            <th class="cantidad d-flex">
+            <th class="cantidad d-flex flex-column flex-wrap">
+                <div class="d-flex">
                 <label for="count" class="form-control form-control-sm">Conunt</label>
                 <input type="text" id="count" class="form-control form-control-sm count" value="" readonly>
+                </div>
+                <div class="d-flex">
+                <label for="efectivo" class="form-control form-control-sm">Pago</label>
+                <input type="number" id="efectivo" class="form-control form-control-sm efectivo" value="" min="1">
+                </div>
+                <div class="d-flex">
+                <label for="cambio" class="form-control form-control-sm">Cambio</label>
+                <input type="text" id="cambio" class="form-control form-control-sm cambio" value="" readonly>
+                </div>
             </th>
-            <th></th>
+            <th>
+           
+            </th>
             <th>
             <label for="" class="form-control form-control-sm">Sub Total</label>
             <label for="" class="form-control form-control-sm">Iva</label>
-            <label for="" class="form-control form-control-sm">Descuento</label>
+            <label for="" class="form-control form-control-sm">Descuento-%</label>
             <label for="" class="form-control form-control-sm">Total</label>
             </th>
             <th class="totales">
                 <input type="text" id="sub-total" class="form-control  form-control-sm sub-total mb-2" value="" readonly>
                 <input type="text" class="form-control  form-control-sm total-iva mb-2" value="" readonly>
-                <input type="text" class="form-control  form-control-sm descuento mb-2" value="" readonly>
+                <input type="number"  class="form-control form-control-sm descuento mb-2" min="0" value="" >
                 <input type="text" class="form-control  form-control-sm total" value="" readonly>
             </th>
         </tr>
@@ -66,33 +98,36 @@
 
 
       
-<div class="d-flex justify-content-around">  
-<button class="btn btn-outline-success px-5 venta" data-toggle="modal"><i class="far fa-money-bill-alt"></i>PAGAR</button>
+<div class="d-flex justify-content-around botones">  
+<button type="button"  class="btn btn-outline-success px-5 venta" data-toggle="modal"><i class="far fa-money-bill-alt"></i>PAGAR</button>
 <button class="btn btn-outline-danger px-5 cancelar" data-toggle="modal"><i class="fas fa-ban"></i>CANCELAR</button>
 </div>
 </div><!--FIN BOX-BODY-->
 
 </div>
-
 <div class="meta-row col-sm-12 col-xs-12 col-lg-6 col-md-6 mt-lg-0 mt-sm-4">
+<div class="card-header bg-gray">
+                <h3 class="card-title">Buscar Productos</h3>
 
+</div>
 <div class="box mb-0 box-primary direct-chat direct-chat-primary" id="product-list-wrapper" style="visibility: visible;">
 <div class="box-header with-border search-field-wrapper">
 <div  id="search-item-form" class="ng-pristine ng-valid">
 <div class="input-group">
 <div class="input-group-btn">
-<button type="button"  class="boton-buscador btn btn-large btn-default"><i class="fa fa-search"></i></button>
+
 <button type="button" class="enable_barcode_search btn btn-large btn-default"><i class="fa fa-barcode"></i></button>
 </div>
-<input autocomplete="off" type="text" id="buscar" name="buscar" placeholder="Barcode, SKU, product name or category ..." class="form-control">
+<input autocomplete="off" type="text" id="buscar" name="buscar" placeholder="Código de Barras, Nombre Producto..." class="form-control">
+<button type="button"  class="boton-buscador btn btn-large btn-default"><i class="fa fa-search"></i></button>
 </div>
 </div>
 </div>
 </div>
 
-<!-- 
+<?php
 $ventas = new MvcController();
--->
+?>
 <div class="box-body" style="visibility: visible;">
     <div class="direct-chat-messages item-list-container mt-4" style="padding:0px;">
         <div class="row d-flex " id="filter-list" style="padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px; padding-bottom: 0px; display: block;">
@@ -111,18 +146,27 @@ $ventas = new MvcController();
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Realizar Venta</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form action="" method="post">
       <div class="modal-body">
-        ...
+       
+        <input type="hidden" name="cliente" id="id_cliente">
+        <input type="hidden" name="total" id="total_venta">
+        <input type="hidden" name="cantidad" id="cantidad_productos">
+        <input type="hidden" name="productos" id="id_productos">
+        <!--<input type="submit" value="Realizar Venta">-->
+        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <?php $ventas->realizarVentaController();  ?>
       </div>
+      </form>
     </div>
   </div>
 </div>
@@ -162,15 +206,7 @@ $ventas = new MvcController();
 
 
 <script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
-<script type="text/javascript">
-	'use strict';
-	// Close Checkout on page navigation:
-	$(window).on('popstate', function() {
-		v2Checkout.stripe.handler.close();
-	});
-});
-			
-</script>
+
 
 
 <style type="text/css">

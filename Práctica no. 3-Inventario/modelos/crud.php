@@ -27,12 +27,13 @@
         /* Este modelo sirve para insertar un nuevo usuario a la bd */
         public function insertarUserModel($datosModel,$tabla){
             $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (firstname,lastname,user_name,user_password,
-            user_email) VALUES (:nusuario,:ausuario,:usuario,:contra,:email)");
+            user_email,tipo) VALUES (:nusuario,:ausuario,:usuario,:contra,:email,:tipo)");
             $stmt->bindParam(":nusuario",$datosModel["nusuario"],PDO::PARAM_STR);
             $stmt->bindParam(":ausuario",$datosModel["ausuario"],PDO::PARAM_STR);
             $stmt->bindParam(":usuario",$datosModel["usuario"],PDO::PARAM_STR);
             $stmt->bindParam(":contra",$datosModel["contra"],PDO::PARAM_STR);
             $stmt->bindParam(":email",$datosModel["email"],PDO::PARAM_STR);
+            $stmt->bindParam(":tipo",$datosModel["tipo"],PDO::PARAM_STR);
             if($stmt->execute()){
                 return "success";
             } else {
@@ -56,13 +57,14 @@
         /* Este modelo sirve para guardar los cambios hechos a un usuarios en particular */
         public function actualizarUserModel($datosModel,$tabla){
             $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET firstname = :nusuario, lastname = :ausuario, 
-            user_name = :usuario, user_password = :contra, user_email = :email WHERE user_id = :id");
+            user_name = :usuario, user_password = :contra, user_email = :email, tipo = :tipo WHERE user_id = :id");
 
             $stmt->bindParam(":nusuario",$datosModel["nusuario"],PDO::PARAM_STR);
             $stmt->bindParam(":ausuario",$datosModel["ausuario"],PDO::PARAM_STR);
             $stmt->bindParam(":usuario",$datosModel["usuario"],PDO::PARAM_STR);
             $stmt->bindParam(":contra",$datosModel["contra"],PDO::PARAM_STR);
             $stmt->bindParam(":email",$datosModel["email"],PDO::PARAM_STR);
+            $stmt->bindParam(":tipo",$datosModel["tipo"],PDO::PARAM_STR);
             $stmt->bindParam(":id",$datosModel["id"],PDO::PARAM_INT);
 
             if($stmt->execute()){
@@ -317,6 +319,7 @@
             $tabla");
             $stmt->execute();
             return $stmt->fetchAll();
+            $stmt->close();
         }
 
 
@@ -328,15 +331,16 @@
            
            if($buscar == ''){    
            $stmt = Conexion::conectar()->prepare("SELECT id_product  AS 'id', name_product AS 'nombre_producto' 
-           FROM $tabla order by id_product");
+           FROM $tabla WHERE stock > 0  order by id_product");
            $stmt->execute();
            return $stmt->fetchAll();
            }
            else{
            $stmt = Conexion::conectar()->prepare("SELECT id_product  AS 'id', name_product AS 'nombre_producto' 
-           FROM $tabla WHERE name_product LIKE '%$buscar%' order by id_product");
+           FROM $tabla WHERE stock > 0 and name_product LIKE '%$buscar%' OR code_product LIKE '%$buscar%' order by id_product");
            $stmt->execute();
-           return $stmt->fetchAll();    
+           return $stmt->fetchAll(); 
+           $stmt->close();   
            }
            }
            
@@ -348,11 +352,12 @@
 		   $stmt -> execute();
 
            return $stmt -> fetch();
+           $stmt->close(); 
            }
            
            public function validarContraModel($tabla,$valor2){
             $stmt = Conexion::conectar()->prepare("SELECT CONCAT(firstname,' ',lastname) AS nombre_usuario,
-            user_name AS usuario, user_password AS contrasena, user_id AS id FROM $tabla WHERE user_name = 
+            user_name AS usuario, user_password AS contrasena, user_id AS id , tipo FROM $tabla WHERE user_name = 
             :usuario");
             $stmt->bindParam(":usuario",$valor2,PDO::PARAM_STR);
             $stmt->execute();
@@ -360,6 +365,97 @@
             $stmt->close();
             
            }
+           
+           public function vistaClientesModel($tabla){
+            $stmt = Conexion::conectar()->prepare("SELECT id_cliente AS 'id', nombre, rfc, date_added FROM $tabla");
+            $stmt->execute();
+            return $stmt->fetchAll();
+            $stmt->close();
+        }
+
+        public function insertarClienteModel($datosModel,$tabla){
+            $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (nombre,rfc) VALUES (:nombre,:rfc)");
+            $stmt->bindParam(":nombre",$datosModel["nombre"],PDO::PARAM_STR);
+            $stmt->bindParam(":rfc",$datosModel["rfc"],PDO::PARAM_STR);
+            if($stmt->execute()){
+                return "success";
+            } else {
+                return "error";
+            }
+            $stmt->close();
+        }
+
+        public function editarClienteModel($datosModel,$tabla){
+            $stmt = Conexion::conectar()->prepare("SELECT id_cliente AS 'id', nombre, rfc FROM $tabla WHERE
+            id_cliente=:id");
+            $stmt->bindParam(":id", $datosModel, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch();
+            $stmt->close();
+        }
+
+        public function actualizarClienteModel($datosModel,$tabla){
+            $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :nombre, rfc = :rfc WHERE id_cliente = :id");
+
+            $stmt->bindParam(":nombre",$datosModel["nombre"],PDO::PARAM_STR);
+            $stmt->bindParam(":rfc",$datosModel["rfc"],PDO::PARAM_STR);
+            $stmt->bindParam(":id",$datosModel["id"],PDO::PARAM_INT);
+    
+            if($stmt->execute()){
+                return "success";
+            } else {
+                return "error";
+            }
+            $stmt->close();
+        }
+
+        public function eliminarClienteModel($datosModel,$tabla){
+            $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_cliente = :id");
+            $stmt->bindParam(":id",$datosModel,PDO::PARAM_INT);
+            if($stmt->execute()){
+                return "success";
+            } else {
+                return "error";
+            }
+            $stmt->close();
+        }
+        
+        public function actualizarventasModel($datosModel,$tabla){
+            $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (cliente,total_venta,total_productos,productos) 
+            VALUES (:id_cliente,:total_venta,:total_productos,:productos)");
+            $stmt->bindParam(":id_cliente",$datosModel["id_cliente"],PDO::PARAM_INT);
+            $stmt->bindParam(":total_venta",$datosModel["total_venta"],PDO::PARAM_STR);
+            $stmt->bindParam(":total_productos",$datosModel["total_productos"],PDO::PARAM_STR);
+            $stmt->bindParam(":productos",$datosModel["productos"],PDO::PARAM_STR);
+            if($stmt->execute()){
+                return "success";
+            } else {
+                return "error";
+            }
+            $stmt->close();
+        }
+
+        public function vistaVentaModel($tabla){
+            $stmt = Conexion::conectar()->prepare("SELECT id_venta AS 'id', total_venta, total_productos, productos, fecha, cliente FROM $tabla");
+            $stmt->execute();
+            return $stmt->fetchAll();
+            $stmt->close();
+        }
+        
+        public function eliminarVentaModel($datosModel,$tabla){
+            $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_venta = :id");
+            $stmt->bindParam(":id",$datosModel,PDO::PARAM_INT);
+            if($stmt->execute()){
+                return "success";
+            } else {
+                return "error";
+            }
+            $stmt->close();
+        }
+
+
+
+
 
     }
 

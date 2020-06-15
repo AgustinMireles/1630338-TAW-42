@@ -68,6 +68,7 @@ $("#filter-list").on("click", "button.agregarProducto", function() {
     $(this).addClass("btn-default");
 
     /**SI EXISTE PRODUCTOS EN LA LISTA DE VENTAS EL USUARIO PUEDE ACCEDER A LOS MODALES DE REALIZAR VENTA Y CANCELA VENTA**/
+    $("button.venta").addClass("realizarventa");
     $("button.venta").attr("data-target", "#modal-venta");
 
     $("button.cancelar").attr("data-target", "#modal-cancelar");
@@ -100,10 +101,10 @@ $("#filter-list").on("click", "button.agregarProducto", function() {
             $(".product-venta").append(
                 '<tr>' +
                 '<td><button class="btn btn-danger quitarProducto" idProducto="' + idProducto + '" ><i class="fa fa-times"></i></button></td>' +
-                '<td><input type="text" class="form-control " idProducto="' + idProducto + '" name="agregarProducto" value="' + nombre + '" readonly required></td>' +
+                '<td><input type="text" class="form-control nombre" idProducto="' + idProducto + '" name="agregarProducto" value="' + nombre + '" readonly required></td>' +
                 '<td class="precio-producto"><input type="text" class="form-control precio" value=" ' + precio + '" readonly></td>' +
                 '<td><input type="number" class="form-control nuevaCantidadProducto" min="1" max="' + stock + '" value="1" stock="' + stock + '" nuevoStock="' + Number(stock - 1) + '" required></td>' +
-                '<td class="precio-total"><input type="text" class="form-control precioFin" value="" readonly></input></td>' +
+                '<td class="precio-total"><input type="text" class="form-control precioFin" value="' + precio + '" readonly></input></td>' +
                 '</tr>');
 
             sumarTotal();
@@ -142,8 +143,12 @@ $(".product-venta").on("click", ".quitarProducto", function() {
         $(".total-iva").val(0);
         $(".count").val(0);
         $(".total").val(0);
+        $(".cambio").val(0);
+        $(".descuento").val(0);
+        $(".efectivo").val(0);
 
         /** SI NO EXISTE PRODUCTOS EN LISTA DE VENTAS, QUITAMOS LA CLASE VENTA-MODAL QUE ABRE EL FORMULARIO PARA PAGAR**/
+        $("button.venta").removeClass("realizarventa");
         $("button.venta").attr("data-target", "");
         $("button.cancelar").attr("data-target", "");
 
@@ -219,10 +224,34 @@ function sumarTotal() {
     var sub_total = $(".sub-total").val(Sumatotal);
 
     var total = Number(parseFloat(sub_total.val()) + parseFloat(iva.val()));
-    console.log(sub_total.val());
+    //console.log(sub_total.val());
     $(".total").val(total);
 
 }
+
+/**EVENTO ENCARGADO DE APLICAR DESCUENTO**/
+$(".totales").on("change", ".descuento", function() {
+
+    sumarTotal();
+    /**TRAEMOS EL PORCENTAJE PARA APLICAR EL DESCUENTO**/
+    var porcentaje = $(".descuento").val();
+
+    /**CONVERTIMOS EL PORCENTAJE EN DECIMALES 0.1,0.2 ETC..**/
+    var descuento = porcentaje / 100;
+
+
+    var total = $(".total").val();
+
+    /**APLICAMOS EL DESCUENTO MULTIPLICANDO EL TOTAL POR EL PORCENTAJE DEL DESCUENTO**/
+    $(".total").val(total * descuento);
+
+    /**si no hay descuento regresamos a los valores normales**/
+    if ($(".total").val() == 0) {
+        sumarTotal();
+    }
+
+    console.log(total);
+});
 
 /** **/
 $(".modal-footer").on("click", "button.enviar-contra", function() {
@@ -266,7 +295,11 @@ $(".modal-footer").on("click", "button.enviar-contra", function() {
                     $(".total-iva").val(0);
                     $(".count").val(0);
                     $(".total").val(0);
+                    $(".cambio").val(0);
+                    $(".descuento").val(0);
+                    $(".efectivo").val(0);
                     /** SI NO EXISTE PRODUCTOS EN LISTA DE VENTAS, QUITAMOS LA CLASE VENTA-MODAL QUE ABRE EL FORMULARIO PARA PAGAR y EL FORMULARIO DE CANCELAR**/
+                    $("button.venta").removeClass("realizarventa");
                     $("button.venta").attr("data-target", "");
                     $("button.cancelar").attr("data-target", "");
                     $("input#contra_admin").val("");
@@ -275,7 +308,7 @@ $(".modal-footer").on("click", "button.enviar-contra", function() {
 
 
             } else {
-                alert("El usuario o la contraseña son incorrectas");
+                alert("!No eres adiministrador¡ o esta incorrecta las credenciales");
                 $("input#contra_admin").val("");
                 $("input#usuario_admin").val("");
             }
@@ -283,6 +316,64 @@ $(".modal-footer").on("click", "button.enviar-contra", function() {
 
         }
     });
+
+
+});
+
+/**EVENTO PARA REGRESAR CAMBIO**/
+$(".efectivo").on("change", function() {
+    var total = $(".total").val();
+    var pago = $(this).val();
+    $(".cambio").val(pago - total);
+})
+
+/**EVENTO PARA REALIZAR LA VENTA**/
+$(".botones").on("click", "button.realizarventa", function() {
+    console.log("hola");
+    var listaProductos = [];
+    var datos = new FormData();
+    var idCliente = $("#cliente").val();
+    $("#id_cliente").val(idCliente);
+    var total = $(".total").val();
+    $("#total_venta").val(total);
+    var count = $(".count").val();
+    $("#cantidad_productos").val(count);
+
+    var idProducto = $(".quitarProducto");
+    var cantidad = $(".nuevaCantidadProducto");
+    var nombre = $(".nombre");
+    for (var i = 0; i < cantidad.length; i++) {
+        listaProductos.push({
+                "id": $(idProducto[i]).attr("idProducto"),
+                "stock": $(cantidad[i]).val(),
+                "nombre": $(nombre[i]).val()
+            })
+            // datos.append("ids", $(idProducto[i]).attr("idProducto"));
+            // datos.append("cantidades", $(cantidad[i]).val());
+    }
+    $("#id_productos").val(JSON.stringify(listaProductos));
+    //console.log(a);
+    /*datos.append("total", total);
+    datos.append("count", count);
+    datos.append("idCliente", idCliente);*/
+
+    /**HACER PETICION AJAX PARA BUSCAR EL PRODUCTO CON EL ID SELECIONADO EN LA LISTA DE PRODUCTOS*/
+    /* $.ajax({
+
+         url: "ajax/productos.ajax.php",
+         method: "POST",
+         data: datos,
+         cache: false,
+         contentType: false,
+         processData: false,
+         dataType: "json",
+         success: function(respuesta) {
+             //console.log(respuesta);
+         }
+
+
+
+     }) /**FIN PETICION AJAX*/
 
 
 });

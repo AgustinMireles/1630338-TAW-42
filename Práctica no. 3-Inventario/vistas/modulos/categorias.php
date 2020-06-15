@@ -23,12 +23,12 @@ if (isset($_GET['registrar'])) {
     <div class="row mb-3"></div>
     <div class="card card-secondary">
         <div class="card-header">
-            <h3 class="card-title">Categorias</h3>
+            <h3 class="card-title">Categorías</h3>
         </div>
         <div class="card-body">
             <div class="row mb-4">
                 <div class="col-sm-6">
-                    <a href="index.php?action=categorias&registrar" class="btn btn-info">Agregar Nuevo Categoria</a>
+                    <a href="index.php?action=categorias&registrar" class="btn btn-info">Agregar Nuevo Categoría</a>
                 </div>
             </div>
             <div id="example2-wrapper" class="dataTables_wrapper dt-boostrap4">

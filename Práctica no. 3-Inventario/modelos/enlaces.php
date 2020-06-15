@@ -5,7 +5,7 @@
         public function enlacesPaginasModel ($enlacesModel){
             if($enlacesModel == "categorias" || $enlacesModel == "ingresar" ||
             $enlacesModel == "inventario" || $enlacesModel == "productos" ||
-            $enlacesModel == "usuarios" || $enlacesModel == "ventas" || $enlacesModel == "salir"){
+            $enlacesModel == "usuarios" || $enlacesModel == "ventas" || $enlacesModel == "historialventas" || $enlacesModel == "clientes" || $enlacesModel == "salir"){
                 $modulo = "vistas/modulos/".$enlacesModel.".php";
                 
             } else if ($enlacesModel == "index"){
