@@ -27,6 +27,19 @@ Route::put('/productos/{id}' , function($id){
     return ('Actualizando producto: ' . $id);
 });
 
+//Parámetros
+Route::get('saludo/{nombre}/{apodo?}' , function($nombre,$apodo=null){
+    
+    //poner la primera letra en mayúscula
+    $nombre = ucfirst($nombre);
+    //validar tiene apodo
+    if($apodo){
+        return "Bienvenido {$nombre}, tu apodo es  {$apodo}";
+    }else{
+        return "Bienvenido {$nombre}";
+    }
+});
+
 
 
 //Metodos para obtención, guardado y eliminación de datos;
