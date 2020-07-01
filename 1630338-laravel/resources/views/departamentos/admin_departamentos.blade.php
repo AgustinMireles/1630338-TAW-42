@@ -1,12 +1,12 @@
 @extends('layout.patron')
-@section('titulo','Administración de empleados')
+@section('titulo','Administración de Departamentos')
 @section('contenido')
     <!--Código HTML puro para mostrar el listado empleados-->
     <div class="right_col" role="main">
         <div class="">
             <div class="page-title">
                 <div class="title_left">
-                    <h3>Administración de empleados</h3>
+                    <h3>Administración de Departamentos</h3>
                 </div>
             </div>
         </div>
@@ -15,7 +15,7 @@
             <div class="col-md-12 col-sm-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2> Listado de empleados</h2>
+                        <h2> Listado de departamentos</h2>
                         <div class="clearfix"></div>
                     </div>
 
@@ -26,40 +26,23 @@
                                     <table id="datatable-keytable" class="table table-striped table-bordered" style="width_100%">
                                         <thead>
                                             <tr>
-                                                <th>Nombre(s)</th>
-                                                <th>Apellidos(s)</th>
-                                                <th>Cédula</th>
-                                                <th>Email</th>
-                                                <th>Lugar Nacimiento</th>
-                                                <th>Sexo</th>
-                                                <th>Estado Civil</th>
-                                                <th>Teléfono</th>
-                                                <th>Departamento</th>
+                                                <th>Nombre departamento</th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
-                                        _create_empleados_table
-                                            @foreach($empleados as $empleado)
+                                        _create_departamentos_table
+                                            @foreach($departamentos as $departamento)
                                                 <tr>
-                                                    
-                                                    <td>{{$empleado->nombres}}</td>
-                                                    <td>{{$empleado->apellidos}}</td>
-                                                    <td>{{$empleado->cedula}}</td>
-                                                    <td>{{$empleado->email}}</td>
-                                                    <td>{{$empleado->lugar_nacimiento}}</td>
-                                                    <td>{{$empleado->sexo}}</td>
-                                                    <td>{{$empleado->estado_civil}}</td>
-                                                    <td>{{$empleado->telefono}}</td>
-                                                    <td>{{$empleado->nombre_departamento}}</td>
+                                                    <td>{{$departamento->nombre}}</td>
                                                    
                                                    
 
                                                     <!--Agregar columna para editar y eliminar registros-->
                                                     <td>
                                                         <div style="display:flex;">
-                                                            <a href="{{url('empleados/'.$empleado->id.'/edit')}}" class='btn btn-secondary'><i class='fas fa-edit'></i></a>
-                                                            <form action="{{url('empleados/'.$empleado->id)}}" method="POST">
+                                                            <a href="{{url('departamentos/'.$departamento->id.'/edit')}}" class='btn btn-secondary'><i class='fas fa-edit'></i></a>
+                                                            <form action="{{url('departamentos/'.$departamento->id)}}" method="POST">
                                                             {{ csrf_field() }}
                                                             {{ method_field('DELETE') }}
                                                             <button class='btn btn-danger'><i class="fas fa-trash"></i></button>

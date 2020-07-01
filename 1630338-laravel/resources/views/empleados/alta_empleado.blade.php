@@ -19,6 +19,20 @@
 <div class="x_content">
 <form action="{{ url('/empleados')}}" enctype="multipart/form-data" method="POST" data-parsley-validate class="form-horizontal form-label-left">
 {{csrf_field()}}
+
+<div class="item form-group">
+<label class="col-form-label col-md-3 col-sm-3 label-align" for="id_departamento"> Departamento <span class="required">*</span>
+</label>
+<div class="col-md-6 col-sm-6">
+<select name="id_departamento" id="id_departamento" class="form-control">
+  @foreach($departamentos as $departamento)
+    <option value="{{$departamento->id}}">{{$departamento->nombre}}</option>
+  @endforeach  
+</select>
+</div>
+</div>
+
+
 <div class="item form-group">
 <label class="col-form-label col-md-3 col-sm-3 label-align" for="nombres"> Nombre(s) <span class="required">*</span>
 </label>
@@ -55,6 +69,8 @@
 <input type="text" id="lugar_nacimiento" name="lugar_nacimiento" required="required" class="form-control">
 </div>
 </div>
+
+
 
 <div class="item form-group">
 <label class="col-form-label col-md-3 col-sm-3 label-align" >Sexo</label>

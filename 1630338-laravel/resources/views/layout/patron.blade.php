@@ -17,7 +17,7 @@
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
    integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK10YPAYjqT085Qq/1cq5FLXAZQ7Ay"
    crossorigin="anonymous">
-
+   
    <!--NProgress--> 
    <link href="{{ asset('css/nprogress.css')}}" rel="stylesheet">
 
@@ -93,9 +93,22 @@
                                     </span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{url('empleados/create') }}">Agregar empleado</a></li>
-                                        <li><a href="{{url('empleados') }}">Consultar empleado</a></li>
+                                        <li><a href="{{url('empleados') }}">Consultar empleados</a></li>
                                     </ul>
                                     </li>
+
+
+                                    <li><a><i class="fas fa-building"></i>&nbsp;&nbsp;&nbsp;&nbsp; Departamentos <span 
+                                    style="float: right" class="fa fa-chevron-down">
+                                    </span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{url('departamentos/create') }}">Agregar departamento</a></li>
+                                        <li><a href="{{url('departamentos') }}">Consultar departamentos</a></li>
+                                    </ul>
+                                    </li>
+
+
+
                                 </ul>    
                         </div>
                     </div>
@@ -135,6 +148,7 @@
                 <div class="clearfix"></div>
             </footer>
             <!--/footer content-->
+           <!----@-include(sweet::alert)-->
         </div>
     </div>    
    
@@ -191,8 +205,8 @@
 <script src="{{ asset('js/prettify.js') }}"></script>
 <!-- jQuery Tags Input -->
 <script src="{{ asset('js/jquery.tagsinput.js') }}"></script>
-
 <!-- Switchery -->
+
 <script src="{{ asset('js/switchery.min.js') }}"></script>
 <!-- Select2 -->
 <script src="{{ asset('js/select2.full.min.js') }}"></script>
@@ -206,7 +220,6 @@
 <script src="{{ asset('js/starrr.js') }}"></script>
 <!-- Custom Theme Scripts -->
 <script src="{{ asset('js/custom.min.js') }}"></script>
-
 <!-- FullCalendar -->
 <script src="{{ asset('js/core/main.js') }}"></script>
 <script src="{{ asset('js/interaction/main.js') }}"></script>
@@ -219,9 +232,9 @@
 <!-- Select Picker -->
 <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
 <!-- Sweet Alert -->
-
+<script src="{{ asset('js/sweetalert2.all.js') }}"></script>
 <!-- Include this in your blade layout -->
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 <!-- Datatables -->
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
@@ -239,4 +252,3 @@
 <script src="{{ asset('js/jszip.min.js') }}"></script>
 <script src="{{ asset('js/pdfmake.min.js') }}"></script>
 <script src="{{ asset('js/vfs_fonts.js') }}"></script>
-;

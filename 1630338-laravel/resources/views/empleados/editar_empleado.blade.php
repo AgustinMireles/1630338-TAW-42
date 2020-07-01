@@ -21,6 +21,21 @@
 {{csrf_field()}}
 {{ method_field('PUT') }}
 <input type="hidden" id="id" name="id" value="{{$empleado->id}}" class="form-control">
+
+<div class="item form-group">
+<label class="col-form-label col-md-3 col-sm-3 label-align" for="id_departamento"> Departamento <span class="required">*</span>
+</label>
+<div class="col-md-6 col-sm-6">
+<select name="id_departamento" id="id_departamento" class="form-control">
+  @foreach($departamentos as $departamento)
+    <option value="{{$departamento->id}}">{{$departamento->nombre}}</option>
+  @endforeach  
+</select>
+</div>
+</div>
+
+
+
 <div class="item form-group">
 <label class="col-form-label col-md-3 col-sm-3 label-align" for="nombres"> Nombre(s) <span class="required">*</span>
 </label>

@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 Route::resource('empleados','empleadosController');
 
 
-
-
+//Vista para el controlador de departamentos
+Route::resource('departamentos','departamentosController');
 
 
 

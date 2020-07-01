@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Empleado;
+use App\Departamento;
 use DB;
 
 class empleadosController extends Controller
 {
     public function index(){
         //Obtener todos los empleados de la tabla de la bd
-        $empleados = Empleado::all();
+        $empleados = Empleado::join('departamentos','empleados.id_departamento','=','departamentos.id')
+        ->select('empleados.id','empleados.nombres','empleados.apellidos','empleados.cedula','empleados.email',
+        'empleados.lugar_nacimiento','empleados.sexo','empleados.estado_civil','empleados.telefono','departamentos.nombre as nombre_departamento')->get();
         //Mostrar vista de la consulta de empleados
         return view('empleados.admin_empleados',compact('empleados'));
     }
@@ -18,8 +21,9 @@ class empleadosController extends Controller
     //Controlador para crear nuevo empleado
     public function create(){
         //Mostrar el formulario para crear empleado
+        $departamentos =  Departamento::all();
         //Se crea un array asociativo que contendra la informacion del nuevo empleado
-        return view('empleados.alta_empleado',compact('empleados'));
+        return view('empleados.alta_empleado',compact('empleados','departamentos'));
     }
 
     //Controlador para almacenar empleados
@@ -39,9 +43,10 @@ class empleadosController extends Controller
     public function edit($id){
         //Editar empleados y mandar a la vista la información
         $empleado = Empleado::findOrFail($id);
+        $departamentos = Departamento::all();
         //echo $empleado;
         //Mostrar la vista
-        return view('empleados.editar_empleado',compact('empleado'));
+        return view('empleados.editar_empleado',compact('empleado','departamentos'));
     }
 
 
@@ -74,6 +79,7 @@ class empleadosController extends Controller
 
         
         $empleado = Empleado::findOrfail($id);
+        $empleado->id_departamento = $request->input('id_departamento');
         $empleado->nombres = $request->input('nombres');
         $empleado->apellidos = $request->input('apellidos');
         $empleado->cedula = $request->input('cedula');
